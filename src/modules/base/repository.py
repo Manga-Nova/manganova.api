@@ -35,7 +35,7 @@ class BaseRepository:
 
         from src.settings import Settings
 
-        BaseRepository._engine = create_async_engine(Settings.postgres_url, echo=True)
+        BaseRepository._engine = create_async_engine(Settings.postgres_url)
         return BaseRepository._engine
 
     @staticmethod
@@ -49,10 +49,4 @@ class BaseRepository:
     @staticmethod
     def session_maker() -> async_sessionmaker[AsyncSession]:
         """Get the session maker."""
-        if BaseRepository._engine is None:
-            err_msg = (
-                "AsyncEngine is not set. "
-                "Use `BaseRepository.get_engine()` to set the engine."
-            )
-            raise ValueError(err_msg)
         return async_sessionmaker(BaseRepository._engine, expire_on_commit=False)
