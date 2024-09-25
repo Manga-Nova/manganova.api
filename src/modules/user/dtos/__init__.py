@@ -1,5 +1,4 @@
 from datetime import datetime
-from uuid import UUID
 
 from pydantic import BaseModel
 
@@ -21,8 +20,8 @@ class UpdateUserDTO(BaseModel):
 class ExportUserDTO(BaseModel):
     """Data Transfer Object for exporting a user."""
 
-    id: UUID
+    id: str
     created_at: datetime
-    updated_at: datetime | None = None
+    updated_at: datetime
     username: str
     email: str
