@@ -18,7 +18,7 @@
 
 ## Technologies
 
-- **Backend**: [Python](https://nodejs.org/), [FastAPI](https://expressjs.com/)
-- **Database**: [MongoDB](https://www.mongodb.com/)
+- **Backend**: [Python](https://python.org/), [FastAPI](https://fastapi.tiangolo.com)
+- **Database**: [PostgreSQL](https://www.postgresql.org)
 - **Storage**: [AWS S3](https://aws.amazon.com/s3/) or [Google Cloud Storage](https://cloud.google.com/storage)
 - **Authentication**: [JWT](https://jwt.io/)
