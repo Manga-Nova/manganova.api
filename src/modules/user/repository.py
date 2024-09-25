@@ -26,3 +26,12 @@ class UserRepository(BaseRepository):
                 .scalars()
                 .first()
             )
+
+    async def get_user_by_email(self, email: str) -> User | None:
+        """Get a user by email."""
+        async with self._session() as session:
+            return (
+                (await session.execute(select(User).where(User.email == email)))
+                .scalars()
+                .first()
+            )
