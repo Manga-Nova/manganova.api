@@ -1,12 +1,24 @@
 from fastapi import FastAPI
 
+from src._lifespan import lifespan
 from src.settings import Settings
 
 
 def create_app() -> FastAPI:
     """Create a FastAPI application."""
-    return FastAPI(
+    app = FastAPI(
         title=Settings.APP_NAME,
         version=Settings.APP_VERSION,
-        separate_input_output_schemas=True,
+        lifespan=lifespan,
     )
+
+    add_routes(app)
+
+    return app
+
+
+def add_routes(app: FastAPI) -> None:
+    """Add routes to the application."""
+    from src.modules.user.controller import router as user_router
+
+    app.include_router(user_router)
