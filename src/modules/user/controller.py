@@ -12,7 +12,7 @@ router = ApiRouter(prefix="/user", tags=["user"])
 SERVICE = UserService(UserRepository())
 
 
-@router.get(path="/{userId}", requires_login=True)
+@router.get(path="/{userId}")
 async def get_user_by_id(userId: Annotated[str, Path()]) -> ExportUserDTO:
     """Get a user by ID."""
     return await SERVICE.get_user_by_id(userId)
