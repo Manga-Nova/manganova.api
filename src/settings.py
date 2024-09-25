@@ -23,5 +23,7 @@ class _Settings(BaseSettings):
     def postgres_url(self) -> str:
         return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
+    JWT_SECRET: str = "secret"
+
 
 Settings = _Settings()
