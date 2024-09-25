@@ -25,3 +25,14 @@ class MissingTokenError(UnauthorizedError):
         **metadata: str | float | dict[str, Any],
     ) -> None:
         super().__init__(message=message, **metadata)
+
+
+class InvalidTokenError(UnauthorizedError):
+    """Invalid token exception."""
+
+    def __init__(
+        self,
+        message: str = "Invalid Token",
+        **metadata: str | float | dict[str, Any],
+    ) -> None:
+        super().__init__(message=message, **metadata)
