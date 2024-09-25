@@ -11,6 +11,8 @@ dependencies = [
     "sqlalchemy[asyncio]>=2.0.35",
     "asyncpg>=0.29.0",
     "psycopg2-binary>=2.9.9",
+    "pyjwt>=2.9.0",
+    "bcrypt>=4.2.0",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"
@@ -31,7 +33,7 @@ dev.cmd = "uvicorn src.__main__:create_app --factory --reload-dir ./src"
 dev.env_file = ".env"
 
 [tool.pdm.dev-dependencies]
-dev = ["commitizen>=3.29.0", "ruff>=0.6.7"]
+dev = ["commitizen>=3.29.0", "ruff>=0.6.7", "types-PyJWT>=1.7.1"]
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
@@ -76,7 +78,7 @@ target-version = "py312"
 # Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
 # McCabe complexity (`C901`) by default.
 select = ["ALL"]
-ignore = ["D100", "D104", "D107", "N803"]
+ignore = ["D", "N803"]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
