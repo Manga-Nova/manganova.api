@@ -6,9 +6,11 @@ authors = [
 ]
 dependencies = [
     "fastapi[standard]>=0.115.0",
-    "sqlmodel>=0.0.22",
     "pydantic>=2.9.2",
     "pydantic-settings>=2.5.2",
+    "sqlalchemy>=2.0.35",
+    "asyncpg>=0.29.0",
+    "psycopg2-binary>=2.9.9",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"
@@ -25,7 +27,7 @@ distribution = false
 start.cmd = "uvicorn src.__main__:create_app --factory --host 0.0.0.0 --port 8000"
 start.env_file = ".env"
 
-dev.cmd = "uvicorn src.__main__:create_app --factory --reload"
+dev.cmd = "uvicorn src.__main__:create_app --factory --reload-dir ./src"
 dev.env_file = ".env"
 
 [tool.pdm.dev-dependencies]
@@ -74,7 +76,7 @@ target-version = "py312"
 # Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
 # McCabe complexity (`C901`) by default.
 select = ["ALL"]
-ignore = ["D100", "D104"]
+ignore = ["D100", "D104", "D107", "N803"]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
