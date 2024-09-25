@@ -36,3 +36,14 @@ class InvalidTokenError(UnauthorizedError):
         **metadata: str | float | dict[str, Any],
     ) -> None:
         super().__init__(message=message, **metadata)
+
+
+class EmailOrPasswordError(UnauthorizedError):
+    """Email or password error exception."""
+
+    def __init__(
+        self,
+        message: str = "Email or password is incorrect",
+        **metadata: str | float | dict[str, Any],
+    ) -> None:
+        super().__init__(message=message, **metadata)
