@@ -10,10 +10,10 @@ class BaseRepository:
     _engine: AsyncEngine | None = None
 
     @staticmethod
-    async def get_engine() -> AsyncEngine:
+    def get_engine() -> AsyncEngine:
         """Get the engine."""
         if BaseRepository._engine is None:
-            return await BaseRepository.create_engine()
+            return BaseRepository.create_engine()
         return BaseRepository._engine
 
     @staticmethod
@@ -24,7 +24,7 @@ class BaseRepository:
             BaseRepository._engine = None
 
     @staticmethod
-    async def create_engine() -> AsyncEngine:
+    def create_engine() -> AsyncEngine:
         """Create the engine."""
         if BaseRepository._engine is not None:
             err_msg = (
@@ -41,7 +41,7 @@ class BaseRepository:
     @staticmethod
     async def create_all() -> None:
         """Create all tables."""
-        engine = await BaseRepository.get_engine()
+        engine = BaseRepository.get_engine()
 
         async with engine.begin() as async_conn:
             await async_conn.run_sync(ModelBase.metadata.create_all)
@@ -49,4 +49,4 @@ class BaseRepository:
     @staticmethod
     def session_maker() -> async_sessionmaker[AsyncSession]:
         """Get the session maker."""
-        return async_sessionmaker(BaseRepository._engine, expire_on_commit=False)
+        return async_sessionmaker(BaseRepository.get_engine(), expire_on_commit=False)
