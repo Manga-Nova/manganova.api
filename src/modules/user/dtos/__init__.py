@@ -20,7 +20,7 @@ class UpdateUserDTO(BaseModel):
 class ExportUserDTO(BaseModel):
     """Data Transfer Object for exporting a user."""
 
-    id: str
+    id: int
     created_at: datetime
     updated_at: datetime
     username: str
