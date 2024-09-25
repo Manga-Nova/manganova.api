@@ -1,15 +1,17 @@
 [project]
 name = "manganova.api"
-version = "0.1.0"
-description = "Default template for PDM package"
+description = "MangaNova is an open-source project that provides manga information to users."
 authors = [
-    {name = "Gabriel Nobrega", email = "gabrieltkdnobrega63@gmail.com"},
+    { name = "Gabriel Nobrega", email = "gabrieltkdnobrega63@gmail.com" },
 ]
 dependencies = []
 requires-python = "==3.12.*"
 readme = "README.md"
-license = {text = "MIT"}
+license = { file = "LICENSE" }
+dynamic = ["version"]
 
+[project.urls]
+Repository = "https://github.com/MangaNova/manganova.api"
 
 [tool.pdm]
 distribution = false
