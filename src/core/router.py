@@ -12,7 +12,7 @@ from fastapi.utils import generate_unique_id
 from starlette.routing import BaseRoute
 
 from src.exceptions.base import ApiError
-from src.exceptions.unauthorized import MissingTokenError
+from src.exceptions.unauthorized import InvalidTokenError, MissingTokenError
 from src.security.auth import AuthSecurity
 
 
@@ -74,7 +74,7 @@ class ApiRouter(APIRouter):
         include_in_schema: bool = True,
         generate_unique_id_function: Callable[[APIRoute], str] = generate_unique_id,
         requires_login: bool = False,
-        exceptions: Sequence[Exception] | None = None,
+        exceptions: Sequence[ApiError] | None = None,
     ) -> None:
         super().__init__(
             prefix=prefix,
@@ -149,7 +149,8 @@ class ApiRouter(APIRouter):
                 dependencies = []
             dependencies.append(Security(AuthSecurity()))  # type: ignore[reportUnknownMemberType]
             responses = self.handle_exceptions(
-                MissingTokenError(Authorization="Bearer <token>"),
+                MissingTokenError(),
+                InvalidTokenError(),
                 responses=responses,
             )
         return dependencies, responses
