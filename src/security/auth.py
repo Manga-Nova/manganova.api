@@ -1,11 +1,22 @@
-from fastapi import HTTPException, Request
-from fastapi.security import APIKeyHeader
+from typing import Literal
 
-from src.exceptions.unauthorized import MissingTokenError
+from fastapi import Request
+from fastapi.security import APIKeyHeader
+from jwt import DecodeError
+from pydantic import BaseModel, ValidationError
+
+from src.core.crypt import CryptHelper
+from src.exceptions.unauthorized import InvalidTokenError, MissingTokenError
+
+
+class _Payload(BaseModel):
+    user_id: int
 
 
 class AuthSecurity(APIKeyHeader):
     """Authorization security scheme."""
+
+    _crypt_helper = CryptHelper()
 
     def __init__(
         self,
@@ -28,11 +39,15 @@ class AuthSecurity(APIKeyHeader):
             return token
         raise MissingTokenError
 
-    async def _validate(self, request: Request) -> None:
+    async def _validate(self, request: Request) -> Literal[True]:
         """Validate token."""
         token = self._get_token(request)
-        if token != "Bearer token":
-            raise HTTPException(status_code=401, detail="Unauthorized")
+        try:
+            payload = _Payload(**self._crypt_helper.decode(token))
+        except (ValidationError, DecodeError):
+            raise InvalidTokenError from None
+        request.state.user_id = payload.user_id
+        return True
 
     async def __call__(self, request: Request) -> None:
         """Check authorization header."""
