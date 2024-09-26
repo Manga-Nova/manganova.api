@@ -3,14 +3,11 @@ from typing import Literal
 from fastapi import Request
 from fastapi.security import APIKeyHeader
 from jwt import DecodeError
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 
 from src.core.crypt import CryptHelper
 from src.exceptions.unauthorized import InvalidTokenError, MissingTokenError
-
-
-class _Payload(BaseModel):
-    user_id: int
+from src.modules.auth.dtos import Payload
 
 
 class AuthSecurity(APIKeyHeader):
@@ -43,10 +40,10 @@ class AuthSecurity(APIKeyHeader):
         """Validate token."""
         token = self._get_token(request)
         try:
-            payload = _Payload(**self._crypt_helper.decode(token))
+            payload = Payload(**self._crypt_helper.decode(token))
         except (ValidationError, DecodeError):
             raise InvalidTokenError from None
-        request.state.user_id = payload.user_id
+        request.state.user = payload
         return True
 
     async def __call__(self, request: Request) -> None:
