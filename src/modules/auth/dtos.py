@@ -31,3 +31,18 @@ class ChangePasswordParams(BaseModel):
 
     old_password: str
     new_password: str
+
+
+class ChangePasswordResponse(BaseModel):
+    """Change password parameters."""
+
+    message: str = "Password changed successfully"
+
+
+class Payload(BaseModel):
+    """Payload model."""
+
+    user_id: int
+    email: str
+    username: str
+    stay_logged_in: bool
