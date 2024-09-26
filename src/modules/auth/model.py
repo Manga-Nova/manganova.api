@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Mapped
 
-from src.modules.base.model import ModelBase
+from src.modules.base.model import ModelBaseTable
 
 
-class OldHash(ModelBase):
+class OldHashTable(ModelBaseTable):
     """Old hash model."""
 
     __tablename__ = "db_old_hashes"
@@ -13,4 +13,4 @@ class OldHash(ModelBase):
 
     def __repr__(self) -> str:
         """Return a string representation of the model."""
-        return f"<OldHash user_id={self.user_id} password={self.password} >"
+        return f"<OldHashTable user_id={self.user_id} password={self.password} >"

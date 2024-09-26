@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 class UserService:
-    """User service."""
+    """UserTable service."""
 
     def __init__(self, user_repository: "UserRepository") -> None:
         self.user_repository = user_repository

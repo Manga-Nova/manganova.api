@@ -6,7 +6,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from src._utils import current_datetime
 
 
-class ModelBase(DeclarativeBase):
+class ModelBaseTable(DeclarativeBase):
     """Base model for all models."""
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, sort_order=-1)

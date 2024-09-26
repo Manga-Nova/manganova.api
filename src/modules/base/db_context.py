@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 from sqlalchemy.ext.asyncio.session import AsyncSession, async_sessionmaker
 
-from src.modules.base.model import ModelBase
+from src.modules.base.model import ModelBaseTable
 from src.settings import Settings
 
 
@@ -45,7 +45,7 @@ class DatabaseContext:
         engine = DatabaseContext.get_engine()
 
         async with engine.begin() as async_conn:
-            await async_conn.run_sync(ModelBase.metadata.create_all)
+            await async_conn.run_sync(ModelBaseTable.metadata.create_all)
 
     @staticmethod
     async def drop_all() -> None:
@@ -56,7 +56,7 @@ class DatabaseContext:
         engine = DatabaseContext.get_engine()
 
         async with engine.begin() as async_conn:
-            await async_conn.run_sync(ModelBase.metadata.drop_all)
+            await async_conn.run_sync(ModelBaseTable.metadata.drop_all)
 
     @staticmethod
     def session_maker() -> async_sessionmaker[AsyncSession]:
