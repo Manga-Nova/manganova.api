@@ -29,7 +29,7 @@ distribution = false
 start.cmd = "uvicorn src.__main__:create_app --factory --host 0.0.0.0 --port 8000"
 start.env_file = ".env"
 
-dev.cmd = "uvicorn src.__main__:create_app --factory --reload-dir ./src"
+dev.cmd = "uvicorn src.__main__:create_app --factory --reload-dir ./src --reload"
 dev.env_file = ".env"
 
 [tool.pdm.dev-dependencies]
