@@ -22,6 +22,5 @@ class ExportUserDTO(BaseModel):
 
     id: int
     created_at: datetime
-    updated_at: datetime
     username: str
     email: str
