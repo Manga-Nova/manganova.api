@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from src.modules.user.dtos import ExportUserDTO
+from src.modules.user.dtos import User
 
 
 class LoginParams(BaseModel):
@@ -23,7 +23,7 @@ class LoginResponse(BaseModel):
     """Login response."""
 
     access_token: str
-    user: ExportUserDTO
+    user: User
 
 
 class ChangePasswordParams(BaseModel):

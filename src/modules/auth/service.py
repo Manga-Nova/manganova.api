@@ -16,7 +16,7 @@ from src.modules.auth.dtos import (
     Payload,
     RegisterParams,
 )
-from src.modules.user.dtos import ExportUserDTO
+from src.modules.user.dtos import User
 from src.settings import Settings
 
 if TYPE_CHECKING:
@@ -47,7 +47,7 @@ class AuthService:
             stay_logged_in=params.stay_logged_in,
         )
 
-        return LoginResponse(user=ExportUserDTO(**user.__dict__), access_token=token)
+        return LoginResponse(user=User(**user.__dict__), access_token=token)
 
     async def register(self, params: RegisterParams) -> LoginResponse:
         """Register a new user."""
@@ -88,7 +88,7 @@ class AuthService:
             Payload(**user.__dict__, stay_logged_in=False).model_dump(),
         )
 
-        return LoginResponse(user=ExportUserDTO(**user.__dict__), access_token=token)
+        return LoginResponse(user=User(**user.__dict__), access_token=token)
 
     async def change_password(self, user_id: int, params: ChangePasswordParams) -> None:
         """Change the password of the current user."""

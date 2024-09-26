@@ -5,7 +5,7 @@ from sqlalchemy import select
 from src.modules.auth.dtos import RegisterParams
 from src.modules.auth.model import OldHashTable
 from src.modules.base.repository import BaseRepository
-from src.modules.user.dtos import UpdateUserDTO
+from src.modules.user.dtos import UpdateUser
 from src.modules.user.model import UserTable
 
 
@@ -21,7 +21,7 @@ class AuthRepository(BaseRepository):
     async def update_user(
         self,
         user: UserTable,
-        update_user: UpdateUserDTO,
+        update_user: UpdateUser,
     ) -> UserTable:
         """Update a user."""
         async with self._session() as session:
