@@ -13,6 +13,7 @@ from src.modules.auth.dtos import (
     ChangePasswordParams,
     LoginParams,
     LoginResponse,
+    Payload,
     RegisterParams,
 )
 from src.modules.user.dtos import ExportUserDTO
@@ -42,7 +43,7 @@ class AuthService:
             raise EmailOrPasswordError
 
         token = self.crypt_helper.encode(
-            {"user_id": user.id},
+            Payload(stay_logged_in=params.stay_logged_in, **user.__dict__).model_dump(),
             stay_logged_in=params.stay_logged_in,
         )
 
@@ -83,7 +84,9 @@ class AuthService:
 
         user = await self.repository.create_user(params)
 
-        token = self.crypt_helper.encode({"user_id": user.id})
+        token = self.crypt_helper.encode(
+            Payload(**user.__dict__, stay_logged_in=False).model_dump(),
+        )
 
         return LoginResponse(user=ExportUserDTO(**user.__dict__), access_token=token)
 
