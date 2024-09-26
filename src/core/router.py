@@ -154,7 +154,7 @@ class ApiRouter(APIRouter):
             )
         return dependencies, responses
 
-    def get(  # noqa: D102, PLR0913
+    def get(  # noqa: PLR0913
         self,
         path: str,
         *,
@@ -229,7 +229,7 @@ class ApiRouter(APIRouter):
             generate_unique_id_function=generate_unique_id_function,
         )
 
-    def post(  # noqa: D102, PLR0913
+    def post(  # noqa: PLR0913
         self,
         path: str,
         *,
@@ -304,7 +304,7 @@ class ApiRouter(APIRouter):
             generate_unique_id_function=generate_unique_id_function,
         )
 
-    def put(  # noqa: D102, PLR0913
+    def put(  # noqa: PLR0913
         self,
         path: str,
         *,
@@ -379,7 +379,7 @@ class ApiRouter(APIRouter):
             generate_unique_id_function=generate_unique_id_function,
         )
 
-    def patch(  # noqa: D102, PLR0913
+    def patch(  # noqa: PLR0913
         self,
         path: str,
         *,
@@ -454,7 +454,7 @@ class ApiRouter(APIRouter):
             generate_unique_id_function=generate_unique_id_function,
         )
 
-    def delete(  # noqa: D102, PLR0913
+    def delete(  # noqa: PLR0913
         self,
         path: str,
         *,
