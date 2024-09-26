@@ -17,7 +17,7 @@ class CryptHelper:
         if stay_logged_in:
             return str(encode(payload, key=Settings.JWT_SECRET, algorithm="HS256"))
 
-        payload.update({"exp": current_datetime() + timedelta(days=1)})
+        payload["exp"] = current_datetime() + timedelta(days=1)
         return str(encode(payload, key=Settings.JWT_SECRET, algorithm="HS256"))
 
     @classmethod
@@ -28,7 +28,7 @@ class CryptHelper:
     @classmethod
     def hash_password(cls, password: str) -> str:
         """Hash password."""
-        return str(hashpw(password.encode(), gensalt()))
+        return hashpw(password.encode(), gensalt()).decode()
 
     @classmethod
     def check_password(cls, password: str, hashed_password: str) -> bool:
