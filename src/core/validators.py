@@ -15,8 +15,5 @@ class RegexValidator:
         self._pattern = re.compile(regex)
         self._exception = exception
 
-        self._validate()
-
-    def _validate(self) -> None:
         if not re.match(self._pattern, self._string):
             raise self._exception
