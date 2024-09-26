@@ -1,17 +1,22 @@
 import re
 
+from src.exceptions.bad_request import BadRequestError
 
-class EmailValidator:
-    def __init__(self, email: str) -> None:
-        self._email = email
-        self._pattern = re.compile(
-            r"^(?=.{4,256}$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
-        )
 
-    def validate(self) -> None:
-        """Validate email."""
-        if not self._email:
-            raise ValueError("Email is required")
+class RegexValidator:
+    def __init__(
+        self,
+        *,
+        string: str,
+        regex: str,
+        exception: type[BadRequestError],
+    ) -> None:
+        self._string = string
+        self._pattern = re.compile(regex)
+        self._exception = exception
 
-        if not re.match(self._pattern, self._email):
-            raise ValueError("Invalid email")
+        self._validate()
+
+    def _validate(self) -> None:
+        if not re.match(self._pattern, self._string):
+            raise self._exception
