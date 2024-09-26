@@ -1,26 +1,15 @@
 from collections.abc import Sequence
-from typing import Any, TypeVar
 
-from sqlalchemy import ScalarResult, Select, select
+from sqlalchemy import select
 
 from src.modules.auth.dtos import RegisterParams
 from src.modules.auth.model import OldHash
-from src.modules.base.db_context import DatabaseContext
+from src.modules.base.repository import BaseRepository
 from src.modules.user.dtos import UpdateUserDTO
 from src.modules.user.model import User
 
-_T = TypeVar("_T", bound=Any)
 
-
-class AuthRepository:
-    _session = DatabaseContext.session_maker()
-
-    async def _execute_query(self, query: Select[tuple[_T]]) -> ScalarResult[_T]:
-        """Helper method to execute a query and return the result."""
-        async with self._session() as session:
-            result = await session.execute(query)
-            return result.scalars()
-
+class AuthRepository(BaseRepository):
     async def create_user(self, create_user: RegisterParams) -> User:
         """Create a user."""
         async with self._session() as session:
