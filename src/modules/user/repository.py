@@ -1,22 +1,13 @@
 from sqlalchemy import select
 
-from src.modules.base.repository import BaseRepository
-from src.modules.user.dtos import CreateUserDTO
+from src.modules.base.db_context import DatabaseContext
 from src.modules.user.model import User
 
 
-class UserRepository(BaseRepository):
+class UserRepository:
     """User repository."""
 
-    _session = BaseRepository.session_maker()
-
-    async def create_user(self, create_user: CreateUserDTO) -> User:
-        """Create a user."""
-        async with self._session() as session:
-            user = User(**create_user.model_dump())
-            session.add(user)
-            await session.commit()
-            return user
+    _session = DatabaseContext.session_maker()
 
     async def get_user_by_id(self, user_id: int) -> User | None:
         """Get a user by ID."""
@@ -32,6 +23,15 @@ class UserRepository(BaseRepository):
         async with self._session() as session:
             return (
                 (await session.execute(select(User).where(User.email == email)))
+                .scalars()
+                .first()
+            )
+
+    async def get_user_by_username(self, username: str) -> User | None:
+        """Get a user by username."""
+        async with self._session() as session:
+            return (
+                (await session.execute(select(User).where(User.username == username)))
                 .scalars()
                 .first()
             )
