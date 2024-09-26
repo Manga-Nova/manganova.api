@@ -21,6 +21,6 @@ def create_app() -> FastAPI:
 
 def add_routes(app: FastAPI) -> None:
     """Add routes to the application."""
-    from src.modules.user.controller import router as user_router
+    from src.modules.router import router
 
-    app.include_router(user_router)
+    app.include_router(router)
