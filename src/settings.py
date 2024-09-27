@@ -25,19 +25,19 @@ class _Settings(BaseSettings):
 
     JWT_SECRET: str = "secret"
 
-    EMAIL_MIN_LENGHT: int = 4
-    EMAIL_MAX_LENGHT: int = 256
+    EMAIL_MIN_LENGTH: int = 4
+    EMAIL_MAX_LENGTH: int = 256
     EMAIL_REGEX: str = r"^(?=.{4,256}$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
 
-    PASSWORD_MIN_LENGHT: int = 8
-    PASSWORD_MAX_LENGHT: int = 256
+    PASSWORD_MIN_LENGTH: int = 8
+    PASSWORD_MAX_LENGTH: int = 256
     PASSWORD_SPECIAL_CHARS: str = "@$!%*?&"
     PASSWORD_REGEX: str = (
         r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,256}$"
     )
 
-    USERNAME_MIN_LENGHT: int = 4
-    USERNAME_MAX_LENGHT: int = 30
+    USERNAME_MIN_LENGTH: int = 4
+    USERNAME_MAX_LENGTH: int = 30
     USERNAME_REGEX: str = r"^[a-zA-Z0-9_\.]{3,50}$"
 
 
