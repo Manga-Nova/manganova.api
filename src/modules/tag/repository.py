@@ -23,22 +23,15 @@ class TagRepository(BaseRepository):
         return (await self._execute_query(query)).all()
 
     async def create_tag(self, params: CreateTag) -> TagTable:
-        async with self._session() as session:
-            tag = TagTable(**params.model_dump())
-            session.add(tag)
-            await session.commit()
-            return tag
+        return await self._save(TagTable(**params.model_dump()))
 
     async def update_tag(
         self,
         tag: "TagTable",
         params: UpdateTag,
     ) -> TagTable:
-        async with self._session() as session:
-            tag.update(params)
-            session.add(tag)
-            await session.commit()
-            return tag
+        tag.update(params)
+        return await self._save(tag)
 
     async def delete_tag(self, tag: "TagTable") -> None:
         async with self._session() as session:

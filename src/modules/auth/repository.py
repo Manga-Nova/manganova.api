@@ -12,11 +12,7 @@ from src.modules.user.model import UserTable
 class AuthRepository(BaseRepository):
     async def create_user(self, create_user: RegisterParams) -> UserTable:
         """Create a user."""
-        async with self._session() as session:
-            user = UserTable(**create_user.model_dump())
-            session.add(user)
-            await session.commit()
-            return user
+        return await self._save(UserTable(**create_user.model_dump()))
 
     async def update_user(
         self,
@@ -24,11 +20,8 @@ class AuthRepository(BaseRepository):
         update_user: UpdateUser,
     ) -> UserTable:
         """Update a user."""
-        async with self._session() as session:
-            for key, value in update_user.model_dump(exclude_defaults=True).items():
-                setattr(user, key, value)
-            await session.commit()
-            return user
+        user.update(update_user)
+        return await self._save(user)
 
     async def update_user_password(self, user: UserTable, new_password: str) -> None:
         """Update a user's password."""

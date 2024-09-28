@@ -49,20 +49,13 @@ class TitleRepository(BaseRepository):
         params: CreateTitle,
         tags: Sequence["TagTable"],
     ) -> TitleTable:
-        async with self._session() as session:
-            title = TitleTable(**params.model_dump(exclude={"tags"}), tags=tags)
-            session.add(title)
-            await session.commit()
-            await session.refresh(title)
-        return title
+        return await self._save(
+            TitleTable(**params.model_dump(exclude={"tags"}), tags=tags),
+        )
 
     async def update_title(self, title: TitleTable, params: UpdateTitle) -> TitleTable:
-        async with self._session() as session:
-            title.update(params)
-            session.add(title)
-            await session.commit()
-            await session.refresh(title)
-        return title
+        title.update(params)
+        return await self._save(title)
 
     async def delete_title(self, title: TitleTable) -> None:
         async with self._session() as session:
@@ -74,22 +67,16 @@ class TitleRepository(BaseRepository):
         title: TitleTable,
         tags: Sequence["TagTable"],
     ) -> TitleTable:
-        async with self._session() as session:
-            title.tags = [tag for tag in tags if tag not in title.tags]
-            session.add(title)
-            await session.commit()
-        return title
+        title.tags = [tag for tag in tags if tag not in title.tags]
+        return await self._save(title)
 
     async def remove_tags(
         self,
         title: TitleTable,
         tags: Sequence["TagTable"],
     ) -> TitleTable:
-        async with self._session() as session:
-            title.tags = [tag for tag in title.tags if tag not in tags]
-            session.add(title)
-            await session.commit()
-        return title
+        title.tags = [tag for tag in title.tags if tag not in tags]
+        return await self._save(title)
 
     async def get_title_by_name(self, name: str) -> TitleTable | None:
         query = select(TitleTable).filter(TitleTable.name == name)

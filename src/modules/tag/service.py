@@ -29,6 +29,7 @@ class TagService:
 
     async def create_tag(self, create_tag: CreateTag) -> Tag:
         """Create a tag."""
+
         tag = await self.repository.create_tag(create_tag)
         return Tag(**tag.__dict__)
 
