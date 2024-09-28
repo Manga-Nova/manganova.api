@@ -1,7 +1,7 @@
 from collections.abc import Sequence
 from typing import Annotated
 
-from fastapi import Body, Form, Path, Query
+from fastapi import Body, Path, Query
 
 from src.core.router import ApiRouter
 from src.modules.tag.repository import TagRepository
@@ -41,7 +41,7 @@ async def get_title(title_id: Annotated[int, Path()]) -> Title:
 @router.patch(path="/{title_id}", response_model=Title)
 async def update_title(
     title_id: Annotated[int, Path()],
-    title: Annotated[UpdateTitle, Form()],
+    title: Annotated[UpdateTitle, Body()],
 ) -> Title:
     """Update a title."""
     return await SERVICE.update_title(title_id, title)
