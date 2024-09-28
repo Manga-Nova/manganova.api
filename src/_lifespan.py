@@ -3,17 +3,17 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from src.modules.base.db_context import DatabaseContext
+from src.core.contexts.postgresql import PostgreSqlConnection
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     """Application lifespan events."""
     # Before startup
-    await DatabaseContext.create_all()
+    await PostgreSqlConnection.create_all()
 
     yield
 
     # Before shutdown
-    await DatabaseContext.drop_all()
-    await DatabaseContext.close_engine()
+    await PostgreSqlConnection.drop_all()
+    await PostgreSqlConnection.close_engine()
