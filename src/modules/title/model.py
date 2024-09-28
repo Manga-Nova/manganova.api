@@ -1,18 +1,58 @@
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
+from datetime import datetime
+from typing import TYPE_CHECKING
 
-from src.modules.base.model import ModelBase
+from sqlalchemy import DateTime, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from src.modules.base.model import ModelBaseTable
+from src.modules.title.enums import TitleContentTypeEnum
+
+if TYPE_CHECKING:
+    from src.modules.tag.model import TagTable
 
 
-class Title(ModelBase):
+class TitleTable(ModelBaseTable):
     """Title model."""
 
     __tablename__ = "db_titles"
 
-    name: Mapped[str] = mapped_column()
+    name: Mapped[str] = mapped_column(__type_pos=String(500), unique=True)
     description: Mapped[str] = mapped_column(__type_pos=String(2000), nullable=True)
-    summary: Mapped[str] = mapped_column(__type_pos=String(500), nullable=True)
+    release_date: Mapped[datetime | None] = mapped_column(
+        __type_pos=DateTime(timezone=True),
+        nullable=True,
+    )
+    content_type: Mapped[TitleContentTypeEnum] = mapped_column(__type_pos=String(100))
+
+    tags: Mapped[list["TagTable"]] = relationship(
+        "TagTable",
+        secondary="db_title_tags",
+        back_populates="titles",
+    )
 
     def __repr__(self) -> str:
         """Return a string representation of the model."""
-        return f"<Title id={self.id} name={self.name} summary={self.summary} >"
+        return f"< Title id={self.id} name={self.name} >"
+
+
+class TitleTagTable(ModelBaseTable):
+    """Title tag model."""
+
+    __tablename__ = "db_title_tags"
+
+    title_id: Mapped[int] = mapped_column(
+        __type_pos=ForeignKey("db_titles.id"),
+        primary_key=True,
+    )
+
+    tag_id: Mapped[int] = mapped_column(
+        __type_pos=ForeignKey("db_tags.id"),
+        primary_key=True,
+    )
+
+    def __repr__(self) -> str:
+        """Return a string representation of the model."""
+        return (
+            f"< TitleTag id={self.id} "
+            f"title_id={self.title_id} tag_id={self.tag_id} >"
+        )
