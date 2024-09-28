@@ -69,7 +69,7 @@ class TitleRepository(BaseRepository):
         tags: Sequence["TagTable"],
     ) -> TitleTable:
         async with self._session() as session:
-            title.tags.extend(tags)
+            title.tags = [tag for tag in tags if tag not in title.tags]
             session.add(title)
             await session.commit()
         return title
