@@ -46,3 +46,12 @@ class PasswordsDoNotMatchError(BadRequestError):
         **metadata: str | float | dict[str, Any],
     ) -> None:
         super().__init__(message=message, **metadata)
+
+
+class MissingParamsError(BadRequestError):
+    def __init__(
+        self,
+        message: str = "Missing parameters",
+        **metadata: str | float | dict[str, Any],
+    ) -> None:
+        super().__init__(message=message, **metadata)

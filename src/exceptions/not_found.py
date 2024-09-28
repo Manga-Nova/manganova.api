@@ -23,3 +23,25 @@ class UserNotFoundError(NotFoundError):
         **metadata: str | float | dict[str, Any],
     ) -> None:
         super().__init__(message=message, **metadata)
+
+
+class TitleNotFoundError(NotFoundError):
+    """Title not found error."""
+
+    def __init__(
+        self,
+        message: str = "Title not found.",
+        **metadata: str | float | dict[str, Any],
+    ) -> None:
+        super().__init__(message=message, **metadata)
+
+
+class TagNotFoundError(NotFoundError):
+    """Tag not found error."""
+
+    def __init__(
+        self,
+        message: str = "Tag not found.",
+        **metadata: str | float | dict[str, Any],
+    ) -> None:
+        super().__init__(message=message, **metadata)
