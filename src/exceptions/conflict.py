@@ -28,3 +28,12 @@ class PasswordAlreadyUsedError(ConflictError):
         **metadata: str | float | dict[str, Any],
     ) -> None:
         super().__init__(message=message, **metadata)
+
+
+class TitleNameAlreadyExistsError(ConflictError):
+    def __init__(
+        self,
+        message: str = "Title name already exists",
+        **metadata: str | float | dict[str, Any],
+    ) -> None:
+        super().__init__(message=message, **metadata)

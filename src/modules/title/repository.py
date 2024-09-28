@@ -84,3 +84,7 @@ class TitleRepository(BaseRepository):
             session.add(title)
             await session.commit()
         return title
+
+    async def get_title_by_name(self, name: str) -> TitleTable | None:
+        query = select(TitleTable).filter(TitleTable.name == name)
+        return (await self._execute_query(query)).first()

@@ -1,6 +1,7 @@
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
+from src.exceptions.conflict import TitleNameAlreadyExistsError
 from src.exceptions.not_found import TagNotFoundError, TitleNotFoundError
 from src.modules.title.dtos import (
     CreateTitle,
@@ -40,7 +41,11 @@ class TitleService:
 
     async def create_title(self, create_title: CreateTitle) -> Title:
         """Create a title."""
+        if await self.repository.get_title_by_name(create_title.name):
+            raise TitleNameAlreadyExistsError
+
         tags = await self.tag_repository.get_tags_by_ids(create_title.tags)
+
         title = await self.repository.create_title(create_title, tags)
         return Title(**title.model_dump())
 
@@ -50,6 +55,11 @@ class TitleService:
 
         if not title:
             raise TitleNotFoundError
+
+        if update_title.name and await self.repository.get_title_by_name(
+            update_title.name,
+        ):
+            raise TitleNameAlreadyExistsError
 
         title = await self.repository.update_title(title, update_title)
         return Title(**title.model_dump())
