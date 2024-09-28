@@ -50,7 +50,7 @@ class DatabaseContext:
     @staticmethod
     async def drop_all() -> None:
         """Drop all tables."""
-        if Settings.ENV == "prod":
+        if not Settings.DB_DROP_TABLES:
             return
 
         engine = DatabaseContext.get_engine()

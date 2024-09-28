@@ -40,5 +40,7 @@ class _Settings(BaseSettings):
     USERNAME_MAX_LENGTH: int = 30
     USERNAME_REGEX: str = r"^[a-zA-Z0-9_\.]{3,50}$"
 
+    DB_DROP_TABLES: bool = False
+
 
 Settings = _Settings()
