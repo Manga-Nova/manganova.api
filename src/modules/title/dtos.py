@@ -36,7 +36,7 @@ class UpdateTitle(BaseModel):
     name: str | None = None
     description: str | None = None
     release_date: datetime | None = None
-    content_type: TitleContentTypeEnum
+    content_type: TitleContentTypeEnum | None = None
 
 
 class GetTitles(BaseModel):
@@ -45,6 +45,8 @@ class GetTitles(BaseModel):
     name: str | None = None
     include_tags: Sequence[int] = []
     exclude_tags: Sequence[int] = []
+    include_content: Sequence[TitleContentTypeEnum] = []
+    exclude_content: Sequence[TitleContentTypeEnum] = []
     limit: int = 10
 
 

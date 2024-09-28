@@ -26,6 +26,12 @@ class TitleRepository(BaseRepository):
         if params.name:
             query = query.filter(TitleTable.name.ilike(f"%{params.name}%"))
 
+        if params.include_content:
+            query = query.filter(TitleTable.content_type.in_(params.include_content))
+
+        if params.exclude_content:
+            query = query.filter(~TitleTable.content_type.in_(params.exclude_content))
+
         if params.include_tags:
             query = query.filter(
                 TitleTable.tags.any(TagTable.id.in_(params.include_tags)),
