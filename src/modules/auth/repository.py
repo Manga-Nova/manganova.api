@@ -23,7 +23,11 @@ class AuthRepository(BaseRepository):
         user.update(update_user)
         return await self._save(user)
 
-    async def update_user_password(self, user: UserTable, new_password: str) -> None:
+    async def update_user_password(
+        self,
+        user: UserTable,
+        new_password: str,
+    ) -> UserTable:
         """Update a user's password."""
         async with self._session() as session:
             old_hash = OldHashTable(user_id=user.id, password=user.password)
@@ -31,6 +35,8 @@ class AuthRepository(BaseRepository):
             user.password = new_password
             session.add(user)
             await session.commit()
+            await session.refresh(user)
+        return user
 
     async def get_user(self, **filters: str | float) -> UserTable | None:
         """Get a user by specified filters."""

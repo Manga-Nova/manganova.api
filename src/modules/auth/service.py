@@ -90,7 +90,7 @@ class AuthService:
 
         return LoginResponse(user=User(**user.__dict__), access_token=token)
 
-    async def change_password(self, user_id: int, params: ChangePasswordParams) -> None:
+    async def change_password(self, user_id: int, params: ChangePasswordParams) -> User:
         """Change the password of the current user."""
         user = await self.repository.get_user(id=user_id)
         if not user:
@@ -113,4 +113,5 @@ class AuthService:
 
         new_password = self.crypt_helper.hash_password(params.new_password)
 
-        await self.repository.update_user_password(user, new_password)
+        user = await self.repository.update_user_password(user, new_password)
+        return User(**user.__dict__)

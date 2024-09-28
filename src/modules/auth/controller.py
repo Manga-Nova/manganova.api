@@ -21,6 +21,7 @@ from src.modules.auth.dtos import (
 )
 from src.modules.auth.repository import AuthRepository
 from src.modules.auth.service import AuthService
+from src.modules.user.dtos import User
 
 router = ApiRouter(prefix="/auth", tags=["auth"])
 
@@ -30,6 +31,7 @@ SERVICE = AuthService(AuthRepository(), CryptHelper())
 @router.post(
     path="/login",
     response_model=LoginResponse,
+    status_code=status.HTTP_200_OK,
     exceptions=[EmailOrPasswordError()],
 )
 async def login(params: Annotated[LoginParams, Body()]) -> LoginResponse:
@@ -40,6 +42,7 @@ async def login(params: Annotated[LoginParams, Body()]) -> LoginResponse:
 @router.post(
     path="/register",
     response_model=LoginResponse,
+    status_code=status.HTTP_201_CREATED,
     exceptions=[
         EmailOrPasswordError(),
         InvalidUsernameError(),
@@ -53,10 +56,10 @@ async def register(params: Annotated[RegisterParams, Body()]) -> LoginResponse:
     return await SERVICE.register(params)
 
 
-@router.post(
+@router.patch(
     path="/change-password",
     requires_login=True,
-    status_code=status.HTTP_202_ACCEPTED,
+    status_code=status.HTTP_200_OK,
     response_model=ChangePasswordResponse,
     exceptions=[
         PasswordAlreadyUsedError(),
@@ -67,7 +70,6 @@ async def register(params: Annotated[RegisterParams, Body()]) -> LoginResponse:
 async def change_password(
     request: Request,
     params: Annotated[ChangePasswordParams, Body()],
-) -> ChangePasswordResponse:
+) -> User:
     """Change the password of the current user."""
-    await SERVICE.change_password(request.state.user.user_id, params)
-    return ChangePasswordResponse()
+    return await SERVICE.change_password(request.state.user.user_id, params)
