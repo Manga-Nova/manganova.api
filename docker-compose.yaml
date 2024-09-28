@@ -5,3 +5,17 @@ services:
       - .env
     ports:
       - "5432:5432"
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      postgres_host: postgres
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres: 
+        condition: service_started
