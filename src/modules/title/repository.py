@@ -47,14 +47,16 @@ class TitleRepository(BaseRepository):
             title = TitleTable(**params.model_dump(exclude={"tags"}), tags=tags)
             session.add(title)
             await session.commit()
-            return title
+            await session.refresh(title)
+        return title
 
     async def update_title(self, title: TitleTable, params: UpdateTitle) -> TitleTable:
         async with self._session() as session:
             title.update(params)
             session.add(title)
             await session.commit()
-            return title
+            await session.refresh(title)
+        return title
 
     async def delete_title(self, title: TitleTable) -> None:
         async with self._session() as session:
@@ -70,7 +72,7 @@ class TitleRepository(BaseRepository):
             title.tags.extend(tags)
             session.add(title)
             await session.commit()
-            return title
+        return title
 
     async def remove_tags(
         self,
@@ -81,4 +83,4 @@ class TitleRepository(BaseRepository):
             title.tags = [tag for tag in title.tags if tag not in tags]
             session.add(title)
             await session.commit()
-            return title
+        return title
