@@ -36,7 +36,13 @@ class PostgreSqlConnection:
 
         from src.settings import Settings
 
-        PostgreSqlConnection._engine = create_async_engine(Settings.postgres_url)
+        PostgreSqlConnection._engine = create_async_engine(
+            Settings.postgres_url,
+            pool_size=20,
+            max_overflow=10,
+            pool_recycle=3600,
+            pool_pre_ping=True,
+        )
         return PostgreSqlConnection._engine
 
     @staticmethod
