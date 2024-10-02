@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 from src.exceptions.conflict import TitleNameAlreadyExistsError
 from src.exceptions.not_found import TagNotFoundError, TitleNotFoundError
+from src.modules.tag.dtos import Tag
 from src.modules.title.dtos import (
     CreateTitle,
     GetTitles,
@@ -47,7 +48,10 @@ class TitleService:
         tags = await self.tag_repository.get_tags_by_ids(create_title.tags)
 
         title = await self.repository.create_title(create_title, tags)
-        return Title(**title.model_dump())
+        return Title(
+            **title.model_dump(),
+            tags=[Tag(**tag.model_dump()) for tag in tags],
+        )
 
     async def update_title(self, title_id: int, update_title: UpdateTitle) -> Title:
         """Update a title."""
