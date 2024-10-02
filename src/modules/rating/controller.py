@@ -1,0 +1,39 @@
+from typing import Annotated
+
+from fastapi import Body, Path, Request
+
+from src.core.router import ApiRouter
+from src.modules.rating.dtos import CreateRating, PostRating, Rating
+from src.modules.rating.repository import RatingRepository
+from src.modules.rating.service import RatingService
+
+router = ApiRouter(prefix="/rating", tags=["Rating"])
+
+SERVICE = RatingService(RatingRepository())
+
+
+@router.get("/{title_id}", response_model=Rating)
+async def get_rating_rating(
+    title_id: Annotated[int, Path()],
+) -> Rating:
+    """Get the rating for a rating."""
+    return await SERVICE.get_rating(title_id)
+
+
+@router.post(
+    "/{title_id}",
+    status_code=201,
+    requires_login=True,
+    response_model=CreateRating,
+)
+async def post_rating(
+    request: Request,
+    title_id: Annotated[int, Path()],
+    params: Annotated[PostRating, Body()],
+) -> CreateRating:
+    """Create a rating for a rating."""
+    return await SERVICE.create_rating(
+        title_id=title_id,
+        user_id=request.state.user.id,
+        params=params,
+    )

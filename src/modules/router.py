@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from src.modules.auth.controller import router as auth_router
+from src.modules.rating.controller import router as rating_router
 from src.modules.tag.controller import router as tag_router
 from src.modules.title.controller import router as title_router
 from src.modules.user.controller import router as user_router
@@ -13,3 +14,4 @@ router.include_router(auth_router)
 router.include_router(user_router)
 router.include_router(title_router)
 router.include_router(tag_router)
+router.include_router(rating_router)
