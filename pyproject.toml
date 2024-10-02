@@ -9,10 +9,9 @@ dependencies = [
     "pydantic>=2.9.2",
     "pydantic-settings>=2.5.2",
     "sqlalchemy[asyncio]>=2.0.35",
-    "asyncpg>=0.29.0",
-    "psycopg2-binary>=2.9.9",
     "pyjwt>=2.9.0",
     "bcrypt>=4.2.0",
+    "psycopg[binary]>=3.2.3",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"
@@ -22,6 +21,8 @@ dynamic = ["version"]
 [project.urls]
 Repository = "https://github.com/MangaNova/manganova.api"
 
+[project.optional-dependencies]
+test = ["pytest>=8.3.3", "pytest-asyncio>=0.24.0"]
 [tool.pdm]
 distribution = false
 
@@ -33,7 +34,12 @@ dev.cmd = "uvicorn src.__main__:create_app --factory --reload-dir ./src --reload
 dev.env_file = ".env"
 
 [tool.pdm.dev-dependencies]
-dev = ["commitizen>=3.29.0", "ruff>=0.6.7", "types-PyJWT>=1.7.1"]
+dev = [
+    "commitizen>=3.29.0",
+    "ruff>=0.6.7",
+    "types-PyJWT>=1.7.1",
+    "alembic>=1.13.3",
+]
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
@@ -64,6 +70,7 @@ exclude = [
     "node_modules",
     "site-packages",
     "venv",
+    "alembic",
 ]
 
 # Same as Black.
