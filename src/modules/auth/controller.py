@@ -72,4 +72,4 @@ async def change_password(
     params: Annotated[ChangePasswordParams, Body()],
 ) -> User:
     """Change the password of the current user."""
-    return await SERVICE.change_password(request.state.user.user_id, params)
+    return await SERVICE.change_password(request.state.user.id, params)

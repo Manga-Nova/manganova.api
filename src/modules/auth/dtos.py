@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from src.modules.user.dtos import User
 
@@ -42,7 +42,7 @@ class ChangePasswordResponse(BaseModel):
 class Payload(BaseModel):
     """Payload model."""
 
-    user_id: int = Field(validation_alias="id")
+    id: int
     email: str
     username: str
     stay_logged_in: bool

@@ -43,11 +43,14 @@ class AuthService:
             raise EmailOrPasswordError
 
         token = self.crypt_helper.encode(
-            Payload(stay_logged_in=params.stay_logged_in, **user.__dict__).model_dump(),
+            Payload(
+                stay_logged_in=params.stay_logged_in,
+                **user.model_dump(),
+            ).model_dump(),
             stay_logged_in=params.stay_logged_in,
         )
 
-        return LoginResponse(user=User(**user.__dict__), access_token=token)
+        return LoginResponse(user=User(**user.model_dump()), access_token=token)
 
     async def register(self, params: RegisterParams) -> LoginResponse:
         """Register a new user."""
@@ -85,10 +88,10 @@ class AuthService:
         user = await self.repository.create_user(params)
 
         token = self.crypt_helper.encode(
-            Payload(**user.__dict__, stay_logged_in=False).model_dump(),
+            Payload(**user.model_dump(), stay_logged_in=False).model_dump(),
         )
 
-        return LoginResponse(user=User(**user.__dict__), access_token=token)
+        return LoginResponse(user=User(**user.model_dump()), access_token=token)
 
     async def change_password(self, user_id: int, params: ChangePasswordParams) -> User:
         """Change the password of the current user."""
