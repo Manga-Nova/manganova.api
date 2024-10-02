@@ -16,7 +16,7 @@ class Title(BaseModel):
     name: str
     description: str | None
     release_date: datetime | None
-    tags: Sequence[Tag]
+    tags: Sequence[Tag] = []
     content_type: TitleContentTypeEnum
 
 

@@ -41,12 +41,12 @@ class TitleTagTable(ModelBaseTable):
     __tablename__ = "db_title_tags"
 
     title_id: Mapped[int] = mapped_column(
-        __type_pos=ForeignKey("db_titles.id"),
+        __type_pos=ForeignKey("db_titles.id", ondelete="CASCADE"),
         primary_key=True,
     )
 
     tag_id: Mapped[int] = mapped_column(
-        __type_pos=ForeignKey("db_tags.id"),
+        __type_pos=ForeignKey("db_tags.id", ondelete="CASCADE"),
         primary_key=True,
     )
 
