@@ -147,7 +147,7 @@ class ApiRouter(APIRouter):
         if self.requires_login or requires_login:
             if dependencies is None:
                 dependencies = []
-            dependencies.append(Security(AuthSecurity()))  # type: ignore[reportUnknownMemberType]
+            dependencies.append(Security(AuthSecurity()))  # type: ignore[attr-defined]
             responses = self.handle_exceptions(
                 MissingTokenError(),
                 InvalidTokenError(),

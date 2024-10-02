@@ -35,4 +35,4 @@ class _Settings(BaseSettings):
     DB_DROP_TABLES: bool = False
 
 
-Settings = _Settings()  # type: ignore[assignment]
+Settings = _Settings()  # type: ignore[call-arg]
