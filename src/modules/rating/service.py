@@ -35,3 +35,7 @@ class RatingService:
         )
 
         return input_params
+
+    async def delete_rating(self, title_id: int, user_id: int) -> None:
+        """Delete a rating."""
+        await self.repository.delete_rating(title_id=title_id, user_id=user_id)

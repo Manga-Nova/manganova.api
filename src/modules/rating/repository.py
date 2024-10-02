@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, TypedDict
 
-from sqlalchemy import func, select
+from sqlalchemy import delete, func, select
 
 from src.modules.base.repository import BaseRepository
 from src.modules.rating.model import RatingTable
@@ -28,6 +28,7 @@ class RatingRepository(BaseRepository):
                 )
                 .group_by(RatingTable.value)
             )
+
             result = (await session.execute(query)).all()
 
             rating_counts = {int(key): int(value) for key, value in result}
@@ -43,4 +44,22 @@ class RatingRepository(BaseRepository):
             }
 
     async def create_rating(self, params: "CreateRating") -> RatingTable:
+        query = select(RatingTable).where(
+            RatingTable.title_id == params.title_id,
+            RatingTable.user_id == params.user_id,
+        )
+
+        if result := (await self._execute_query(query)).one_or_none():
+            result.value = params.value
+            return await self._save(result)
+
         return await self._save(RatingTable(**params.model_dump()))
+
+    async def delete_rating(self, title_id: int, user_id: int) -> None:
+        async with self._session() as session:
+            query = delete(RatingTable).where(
+                RatingTable.title_id == title_id,
+                RatingTable.user_id == user_id,
+            )
+            await session.execute(query)
+            await session.commit()

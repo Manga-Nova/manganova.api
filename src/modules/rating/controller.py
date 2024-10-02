@@ -7,7 +7,7 @@ from src.modules.rating.dtos import CreateRating, PostRating, Rating
 from src.modules.rating.repository import RatingRepository
 from src.modules.rating.service import RatingService
 
-router = ApiRouter(prefix="/rating", tags=["Rating"])
+router = ApiRouter(prefix="/rating", tags=["rating"])
 
 SERVICE = RatingService(RatingRepository())
 
@@ -37,3 +37,12 @@ async def post_rating(
         user_id=request.state.user.id,
         params=params,
     )
+
+
+@router.delete("/{title_id}", status_code=204, requires_login=True)
+async def delete_rating(
+    request: Request,
+    title_id: Annotated[int, Path()],
+) -> None:
+    """Delete a rating for a rating."""
+    await SERVICE.delete_rating(title_id, request.state.user.id)
