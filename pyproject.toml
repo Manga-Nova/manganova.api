@@ -33,12 +33,20 @@ start.env_file = ".env"
 dev.cmd = "uvicorn src.__main__:create_app --factory --reload-dir ./src --reload"
 dev.env_file = ".env"
 
+ruffCheck.cmd = "ruff check --fix"
+ruffFormat.cmd = "ruff format"
+mypyTypecheck.cmd = "mypy"
+
+lint = { composite = ["ruffCheck", "ruffFormat", "mypyTypecheck"] }
+
+
 [tool.pdm.dev-dependencies]
 dev = [
     "commitizen>=3.29.0",
     "ruff>=0.6.7",
     "types-PyJWT>=1.7.1",
     "alembic>=1.13.3",
+    "mypy>=1.11.2",
 ]
 
 [tool.ruff]
@@ -85,7 +93,7 @@ target-version = "py312"
 # Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
 # McCabe complexity (`C901`) by default.
 select = ["ALL"]
-ignore = ["D", "N803"]
+ignore = ["D", "N803", "ISC001"]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
@@ -123,3 +131,6 @@ docstring-code-line-length = "dynamic"
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["S101", "PLR2004"]
+
+[tool.mypy]
+files = "src/**/*.py"
