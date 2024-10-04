@@ -28,7 +28,7 @@ class BaseTable(DeclarativeBase):
 
     def __repr__(self) -> str:
         """Return a string representation of the model."""
-        return f"<{self.__class__.__name__} id={self.id} >"
+        return f"< {self.__class__.__name__} id={self.id} >"
 
     def update(self, model: "BaseModel", exclude: set[str] | None = None) -> None:
         """Update the model with the given data."""
