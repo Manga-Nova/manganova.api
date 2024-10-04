@@ -1,4 +1,5 @@
 from collections.abc import Sequence
+from typing import Self
 
 from sqlalchemy import select
 
@@ -10,6 +11,13 @@ from src.modules.user.model import UserTable
 
 
 class AuthRepository(BaseRepository):
+    __instance: Self | None = None
+
+    def __new__(cls) -> Self:
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+        return cls.__instance
+
     async def create_user(self, create_user: RegisterParams) -> UserTable:
         """Create a user."""
         return await self._save(UserTable(**create_user.model_dump()))

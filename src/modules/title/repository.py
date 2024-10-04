@@ -1,4 +1,5 @@
 from collections.abc import Sequence
+from typing import Self
 
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
@@ -10,6 +11,13 @@ from src.modules.title.model import TitleTable
 
 
 class TitleRepository(BaseRepository):
+    __instance: Self | None = None
+
+    def __new__(cls) -> Self:
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+        return cls.__instance
+
     async def get_title(self, **filters: str | float) -> TitleTable | None:
         """Get a title by specified filters."""
 
@@ -23,6 +31,7 @@ class TitleRepository(BaseRepository):
         query = (
             select(TitleTable).options(joinedload(TitleTable.tags)).limit(params.limit)
         )
+
         if params.name:
             query = query.filter(TitleTable.name.ilike(f"%{params.name}%"))
 

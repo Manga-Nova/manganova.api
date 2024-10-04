@@ -1,4 +1,5 @@
 from collections.abc import Sequence
+from typing import Self
 
 from sqlalchemy import select
 
@@ -8,6 +9,13 @@ from src.modules.tag.model import TagTable
 
 
 class TagRepository(BaseRepository):
+    __instance: Self | None = None
+
+    def __new__(cls) -> Self:
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+        return cls.__instance
+
     async def get_tag(self, tag_id: int) -> TagTable | None:
         query = select(TagTable).filter(TagTable.id == tag_id)
         return (await self._execute_query(query)).first()

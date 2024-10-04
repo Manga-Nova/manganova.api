@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, TypedDict
+from typing import TYPE_CHECKING, Self, TypedDict
 
 from sqlalchemy import delete, func, select
 
@@ -17,6 +17,13 @@ class _RatingResponse(TypedDict):
 
 
 class RatingRepository(BaseRepository):
+    __instance: Self | None = None
+
+    def __new__(cls) -> Self:
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+        return cls.__instance
+
     async def get_rating(self, title_id: int) -> _RatingResponse:
         """Get a rating by specified filters."""
 
