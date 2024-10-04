@@ -1,11 +1,11 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.modules.base.model import ModelBaseTable
+from src.modules.base.table import BaseTable
 from src.settings import Settings
 
 
-class UserTable(ModelBaseTable):
+class UserTable(BaseTable):
     """UserTable model."""
 
     __tablename__ = "db_users"

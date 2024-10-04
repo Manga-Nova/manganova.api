@@ -1,10 +1,10 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.modules.base.model import ModelBaseTable
+from src.modules.base.table import BaseTable
 
 
-class OldHashTable(ModelBaseTable):
+class OldHashTable(BaseTable):
     """Old hash model."""
 
     __tablename__ = "db_old_hashes"

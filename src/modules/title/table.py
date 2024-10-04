@@ -4,14 +4,14 @@ from typing import TYPE_CHECKING
 from sqlalchemy import DateTime, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.modules.base.model import ModelBaseTable
+from src.modules.base.table import BaseTable
 from src.modules.title.enums import TitleContentTypeEnum
 
 if TYPE_CHECKING:
-    from src.modules.tag.model import TagTable
+    from src.modules.tag.table import TagTable
 
 
-class TitleTable(ModelBaseTable):
+class TitleTable(BaseTable):
     """Title model."""
 
     __tablename__ = "db_titles"
@@ -35,7 +35,7 @@ class TitleTable(ModelBaseTable):
         return f"< Title id={self.id} name={self.name} >"
 
 
-class TitleTagTable(ModelBaseTable):
+class TitleTagTable(BaseTable):
     """Title tag model."""
 
     __tablename__ = "db_title_tags"

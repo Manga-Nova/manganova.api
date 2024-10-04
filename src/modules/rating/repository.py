@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Self, TypedDict
 from sqlalchemy import delete, func, select
 
 from src.modules.base.repository import BaseRepository
-from src.modules.rating.model import RatingTable
+from src.modules.rating.table import RatingTable
 
 if TYPE_CHECKING:
     from src.modules.rating.dtos import CreateRating

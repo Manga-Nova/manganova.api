@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from pydantic import BaseModel
 
 
-class ModelBaseTable(DeclarativeBase):
+class BaseTable(DeclarativeBase):
     """Base model for all models."""
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, sort_order=-1)
@@ -52,7 +52,7 @@ class ModelBaseTable(DeclarativeBase):
                 items: list[Any] = []
                 item: Any
                 for item in value:
-                    if isinstance(item, ModelBaseTable):
+                    if isinstance(item, BaseTable):
                         items.append(item.model_dump())
                     else:
                         items.append(item)

@@ -5,9 +5,9 @@ from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 
 from src.modules.base.repository import BaseRepository
-from src.modules.tag.model import TagTable
+from src.modules.tag.table import TagTable
 from src.modules.title.dtos import CreateTitle, GetTitles, UpdateTitle
-from src.modules.title.model import TitleTable
+from src.modules.title.table import TitleTable
 
 
 class TitleRepository(BaseRepository):

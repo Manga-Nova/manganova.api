@@ -3,7 +3,7 @@ from typing import Self
 from sqlalchemy import select
 
 from src.modules.base.repository import BaseRepository
-from src.modules.user.model import UserTable
+from src.modules.user.table import UserTable
 
 
 class UserRepository(BaseRepository):

@@ -3,14 +3,14 @@ from typing import TYPE_CHECKING
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.modules.base.model import ModelBaseTable
+from src.modules.base.table import BaseTable
 from src.modules.tag.enums import TagGroupEnum
 
 if TYPE_CHECKING:
-    from src.modules.title.model import TitleTable
+    from src.modules.title.table import TitleTable
 
 
-class TagTable(ModelBaseTable):
+class TagTable(BaseTable):
     """Tag model."""
 
     __tablename__ = "db_tags"

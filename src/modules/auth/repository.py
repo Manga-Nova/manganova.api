@@ -4,10 +4,10 @@ from typing import Self
 from sqlalchemy import select
 
 from src.modules.auth.dtos import RegisterParams
-from src.modules.auth.model import OldHashTable
+from src.modules.auth.table import OldHashTable
 from src.modules.base.repository import BaseRepository
 from src.modules.user.dtos import UpdateUser
-from src.modules.user.model import UserTable
+from src.modules.user.table import UserTable
 
 
 class AuthRepository(BaseRepository):

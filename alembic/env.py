@@ -19,9 +19,9 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 
-from src.modules.base.model import ModelBaseTable
+from src.modules.base.table import BaseTable
 
-target_metadata = ModelBaseTable.metadata
+target_metadata = BaseTable.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

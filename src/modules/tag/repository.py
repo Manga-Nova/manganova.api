@@ -5,7 +5,7 @@ from sqlalchemy import select
 
 from src.modules.base.repository import BaseRepository
 from src.modules.tag.dtos import CreateTag, GetTags, UpdateTag
-from src.modules.tag.model import TagTable
+from src.modules.tag.table import TagTable
 
 
 class TagRepository(BaseRepository):

@@ -3,10 +3,10 @@ from typing import Any, TypeVar
 from sqlalchemy import ScalarResult, Select
 
 from src.core.contexts.postgresql import PostgreSqlConnection
-from src.modules.base.model import ModelBaseTable
+from src.modules.base.table import BaseTable
 
 _T = TypeVar("_T", bound=Any)
-_M = TypeVar("_M", bound=ModelBaseTable)
+_M = TypeVar("_M", bound=BaseTable)
 
 
 class BaseRepository:

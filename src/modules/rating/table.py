@@ -1,10 +1,10 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.modules.base.model import ModelBaseTable
+from src.modules.base.table import BaseTable
 
 
-class RatingTable(ModelBaseTable):
+class RatingTable(BaseTable):
     __tablename__ = "db_ratings"
 
     user_id: Mapped[int] = mapped_column(
