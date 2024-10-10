@@ -1,6 +1,6 @@
 from typing import Any, TypeVar
 
-from sqlalchemy import ScalarResult, Select
+from sqlalchemy import Delete, ScalarResult, Select
 
 from src.core.contexts.postgresql import PostgreSqlConnection
 from src.modules.base.table import BaseTable
@@ -25,3 +25,9 @@ class BaseRepository:
             await session.commit()
             await session.refresh(model)
         return model
+
+    async def _delete(self, statement: Delete) -> None:
+        """Deletes a record."""
+        async with self._session() as session:
+            await session.delete(statement)
+            await session.commit()
