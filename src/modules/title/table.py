@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import DateTime, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from src._utils import current_datetime
 from src.modules.base.table import BaseTable
 from src.modules.title.enums import TitleContentTypeEnum
 
@@ -15,6 +16,19 @@ class TitleTable(BaseTable):
     """Title model."""
 
     __tablename__ = "db_titles"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, sort_order=-1)
+    created_at: Mapped[datetime] = mapped_column(
+        __type_pos=DateTime(timezone=True),
+        default=current_datetime,
+        sort_order=-1,
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        __type_pos=DateTime(timezone=True),
+        default=current_datetime,
+        onupdate=current_datetime,
+        sort_order=-1,
+    )
 
     name: Mapped[str] = mapped_column(__type_pos=String(500), unique=True)
     description: Mapped[str] = mapped_column(__type_pos=String(2000), nullable=True)
@@ -52,7 +66,4 @@ class TitleTagTable(BaseTable):
 
     def __repr__(self) -> str:
         """Return a string representation of the model."""
-        return (
-            f"< TitleTag id={self.id} "
-            f"title_id={self.title_id} tag_id={self.tag_id} >"
-        )
+        return f"< TitleTag title_id={self.title_id} tag_id={self.tag_id} >"

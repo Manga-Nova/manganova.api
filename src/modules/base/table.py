@@ -1,10 +1,6 @@
-from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
-from sqlalchemy import DateTime
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-
-from src._utils import current_datetime
+from sqlalchemy.orm import DeclarativeBase
 
 if TYPE_CHECKING:
     from pydantic import BaseModel
@@ -12,23 +8,6 @@ if TYPE_CHECKING:
 
 class BaseTable(DeclarativeBase):
     """Base model for all models."""
-
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, sort_order=-1)
-    created_at: Mapped[datetime] = mapped_column(
-        __type_pos=DateTime(timezone=True),
-        default=current_datetime,
-        sort_order=-1,
-    )
-    updated_at: Mapped[datetime] = mapped_column(
-        __type_pos=DateTime(timezone=True),
-        default=current_datetime,
-        onupdate=current_datetime,
-        sort_order=-1,
-    )
-
-    def __repr__(self) -> str:
-        """Return a string representation of the model."""
-        return f"< {self.__class__.__name__} id={self.id} >"
 
     def update(self, model: "BaseModel", exclude: set[str] | None = None) -> None:
         """Update the model with the given data."""

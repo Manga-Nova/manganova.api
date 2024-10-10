@@ -19,6 +19,6 @@ class RatingTable(BaseTable):
 
     def __repr__(self) -> str:
         return (
-            f"< Rating id={self.id} user_id={self.user_id} "
+            f"< Rating user_id={self.user_id} "
             f"title_id={self.title_id} value={self.value} >"
         )
