@@ -1,13 +1,17 @@
 from collections.abc import Sequence
-from typing import Self
+from typing import TYPE_CHECKING, Self
 
-from sqlalchemy import select
+from sqlalchemy import delete, func, select
 from sqlalchemy.orm import joinedload
 
+from src.modules._rating_dto import Rating
 from src.modules.base.repository import BaseRepository
 from src.modules.tag.table import TagTable
 from src.modules.title.dtos import CreateTitle, GetTitles, UpdateTitle
-from src.modules.title.table import TitleTable
+from src.modules.title.table import TitleRatingTable, TitleTable
+
+if TYPE_CHECKING:
+    from src.modules._rating_dto import CreateRating
 
 
 class TitleRepository(BaseRepository):
@@ -90,3 +94,37 @@ class TitleRepository(BaseRepository):
     async def get_title_by_name(self, name: str) -> TitleTable | None:
         query = select(TitleTable).filter(TitleTable.name == name)
         return (await self._execute_query(query)).first()
+
+    async def get_title_rating(
+        self,
+        title_id: int,
+    ) -> Rating:
+        """Get a rating by specified filters."""
+
+        async with self._session() as session:
+            query = (
+                select(TitleRatingTable.value, func.count(TitleRatingTable.value))
+                .where(TitleRatingTable.target_id == title_id)
+                .group_by(TitleRatingTable.value)
+            )
+
+            result = (await session.execute(query)).all()
+
+            rating_counts = {int(key): int(value) for key, value in result}
+
+            total_ratings = sum(rating_counts.values())
+            weighted_sum = sum(value * count for value, count in rating_counts.items())
+
+            average_rating = weighted_sum / total_ratings if total_ratings > 0 else 0
+
+            return Rating(average=average_rating, ratings=rating_counts)
+
+    async def create_title_rating(self, params: "CreateRating") -> "TitleRatingTable":
+        return await self._save(TitleRatingTable(**params.model_dump()))
+
+    async def delete_title_rating(self, title_id: int, user_id: int) -> None:
+        smt = delete(TitleRatingTable).where(
+            TitleRatingTable.target_id == title_id,
+            TitleRatingTable.user_id == user_id,
+        )
+        await self._delete(smt)

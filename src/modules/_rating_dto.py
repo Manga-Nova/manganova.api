@@ -14,7 +14,7 @@ class CreateRating(BaseModel):
     """Create rating model."""
 
     user_id: int
-    title_id: int
+    target_id: int
     value: Literal[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 

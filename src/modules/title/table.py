@@ -67,3 +67,23 @@ class TitleTagTable(BaseTable):
     def __repr__(self) -> str:
         """Return a string representation of the model."""
         return f"< TitleTag title_id={self.title_id} tag_id={self.tag_id} >"
+
+
+class TitleRatingTable(BaseTable):
+    __tablename__ = "db_title_ratings"
+
+    user_id: Mapped[int] = mapped_column(
+        __type_pos=ForeignKey("db_users.id", ondelete="CASCADE"),
+        primary_key=True,
+    )
+    target_id: Mapped[int] = mapped_column(
+        __type_pos=ForeignKey("db_titles.id", ondelete="CASCADE"),
+        primary_key=True,
+    )
+    value: Mapped[float]
+
+    def __repr__(self) -> str:
+        return (
+            f"< TitleRating user_id={self.user_id} "
+            f"title_id={self.target_id} value={self.value} >"
+        )

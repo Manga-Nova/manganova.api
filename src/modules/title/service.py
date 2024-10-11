@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 from src.exceptions.conflict import TitleNameAlreadyExistsError
 from src.exceptions.not_found import TagNotFoundError, TitleNotFoundError
+from src.modules._rating_dto import CreateRating, PostRating
 from src.modules.tag.dtos import Tag
 from src.modules.title.dtos import (
     CreateTitle,
@@ -13,6 +14,7 @@ from src.modules.title.dtos import (
 )
 
 if TYPE_CHECKING:
+    from src.modules._rating_dto import Rating
     from src.modules.tag.repository import TagRepository
     from src.modules.title.repository import TitleRepository
 
@@ -106,3 +108,26 @@ class TitleService:
 
         title = await self.repository.remove_tags(title_, tags)
         return Title(**title.model_dump())
+
+    async def get_title_rating(self, title_id: int) -> "Rating":
+        """Get the rating for a title."""
+        return await self.repository.get_title_rating(title_id)
+
+    async def post_title_rating(
+        self,
+        user_id: int,
+        title_id: int,
+        params: PostRating,
+    ) -> "CreateRating":
+        """Post a rating for a title."""
+        input_params = CreateRating(
+            user_id=user_id,
+            target_id=title_id,
+            value=params.value,
+        )
+        await self.repository.create_title_rating(input_params)
+        return input_params
+
+    async def remove_title_rating(self, user_id: int, title_id: int) -> None:
+        """Remove a rating for a title."""
+        await self.repository.delete_title_rating(user_id, title_id)
