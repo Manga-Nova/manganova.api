@@ -16,6 +16,7 @@
         "./src",
         "--reload"
       ],
+      "envFile": "${workspaceFolder}/.env",
       "jinja": true
     }
   ]
