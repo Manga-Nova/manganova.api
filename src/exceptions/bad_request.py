@@ -55,3 +55,12 @@ class MissingParamsError(BadRequestError):
         **metadata: str | float | dict[str, Any],
     ) -> None:
         super().__init__(message=message, **metadata)
+
+
+class InvalidMimeTypeError(BadRequestError):
+    def __init__(
+        self,
+        message: str = "Invalid mime type",
+        **metadata: str | float | dict[str, Any],
+    ) -> None:
+        super().__init__(message=message, **metadata)
