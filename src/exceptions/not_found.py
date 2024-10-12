@@ -45,3 +45,14 @@ class TagNotFoundError(NotFoundError):
         **metadata: str | float | dict[str, Any],
     ) -> None:
         super().__init__(message=message, **metadata)
+
+
+class GroupNotFoundError(NotFoundError):
+    """Group not found error."""
+
+    def __init__(
+        self,
+        message: str = "Group not found.",
+        **metadata: str | float | dict[str, Any],
+    ) -> None:
+        super().__init__(message=message, **metadata)
