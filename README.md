@@ -21,3 +21,4 @@
 - **Backend**: [Python](https://python.org/), [FastAPI](https://fastapi.tiangolo.com)
 - **Database**: [PostgreSQL](https://www.postgresql.org)
 - **Authentication**: [JWT](https://jwt.io/)
+- **Storage**: [AWS S3](https://aws.amazon.com/s3/)

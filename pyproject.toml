@@ -12,6 +12,8 @@ dependencies = [
     "pyjwt>=2.9.0",
     "bcrypt>=4.2.0",
     "psycopg[binary]>=3.2.3",
+    "aioboto3>=13.1.1",
+    "python-magic>=0.4.27",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"
@@ -23,6 +25,7 @@ Repository = "https://github.com/MangaNova/manganova.api"
 
 [project.optional-dependencies]
 test = ["pytest>=8.3.3", "pytest-asyncio>=0.24.0"]
+
 [tool.pdm]
 distribution = false
 
@@ -47,6 +50,8 @@ dev = [
     "types-PyJWT>=1.7.1",
     "alembic>=1.13.3",
     "mypy>=1.11.2",
+    "types-aioboto3>=13.1.1",
+    "awscli-local[ver1]>=0.22.0",
 ]
 
 [tool.ruff]

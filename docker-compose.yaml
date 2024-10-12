@@ -1,21 +1,28 @@
 services:
   postgres:
+    container_name: "POSTGRESQL"
     image: postgres:latest
     env_file:
       - .env
     ports:
       - "5432:5432"
 
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    environment:
-      postgres_host: postgres
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-AWS-S3}"
+    image: localstack/localstack
     ports:
-      - "8000:8000"
-    depends_on:
-      postgres: 
-        condition: service_started
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      SERVICES: s3
+      SKIP_SSL_CERT_DOWNLOAD: 1
+      DOCKER_HOST: unix:///var/run/docker.sock
+      AWS_ACCESS_KEY_ID: 123
+      AWS_SECRET_ACCESS_KEY: abc
+      AWS_BUCKET_NAME: mybucket
+      AWS_REGION: sa-east-1
+      
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
