@@ -15,6 +15,11 @@ class _Settings(BaseSettings):
 
     DB_URL: str
 
+    AWS_ACCESS_KEY_ID: str = "123"
+    AWS_SECRET_ACCESS_KEY: str = "abc"
+    AWS_REGION: str = "sa-east-1"
+    AWS_BUCKET_NAME: str = "mybucket"
+
     JWT_SECRET: str = "secret"
 
     EMAIL_MIN_LENGTH: int = 4
