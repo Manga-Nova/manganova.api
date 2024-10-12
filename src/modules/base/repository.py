@@ -30,5 +30,5 @@ class BaseRepository:
     async def _delete(self, statement: "Delete") -> None:
         """Deletes a record."""
         async with self._session() as session:
-            await session.delete(statement)
+            await session.execute(statement)
             await session.commit()
