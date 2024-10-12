@@ -18,6 +18,7 @@ class Title(BaseModel):
     release_date: datetime | None
     tags: Sequence[Tag] = []
     content_type: TitleContentTypeEnum
+    cover_image: str | None
 
 
 class CreateTitle(BaseModel):

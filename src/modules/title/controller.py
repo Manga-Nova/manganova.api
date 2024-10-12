@@ -1,7 +1,7 @@
 from collections.abc import Sequence
 from typing import Annotated
 
-from fastapi import Body, Path, Query, Request
+from fastapi import Body, File, Path, Query, Request, UploadFile
 
 from src.core.router import ApiRouter
 from src.exceptions.conflict import TitleNameAlreadyExistsError
@@ -111,3 +111,12 @@ async def delete_title_rating(
 ) -> None:
     """Delete a rating for a title."""
     await SERVICE.remove_title_rating(request.state.user.id, title_id)
+
+
+@router.post(path="/{title_id}/cover")
+async def upload_title_cover(
+    title_id: Annotated[int, Path()],
+    file: Annotated[UploadFile, File()],
+) -> str:
+    """Upload a title cover."""
+    return await SERVICE.post_title_cover(title_id, file)

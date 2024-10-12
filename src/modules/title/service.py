@@ -1,6 +1,12 @@
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
+import magic
+from fastapi import UploadFile
+
+from src.core.contexts.aws_s3 import AwsContext
+from src.core.validators import RegexValidator
+from src.exceptions.bad_request import InvalidMimeTypeError
 from src.exceptions.conflict import TitleNameAlreadyExistsError
 from src.exceptions.not_found import TagNotFoundError, TitleNotFoundError
 from src.modules._rating_dto import CreateRating, PostRating
@@ -12,6 +18,7 @@ from src.modules.title.dtos import (
     UpdateTitle,
     UpdateTitleTags,
 )
+from src.settings import Settings
 
 if TYPE_CHECKING:
     from src.modules._rating_dto import Rating
@@ -27,6 +34,8 @@ class TitleService:
     ) -> None:
         self.repository = title_repository
         self.tag_repository = tag_repository
+        self.aws_session = AwsContext.get_session()
+        self.MIME = magic.Magic(mime=True)
 
     async def get_title(self, title_id: int) -> Title:
         """Get a title by ID."""
@@ -57,6 +66,7 @@ class TitleService:
 
     async def update_title(self, title_id: int, update_title: UpdateTitle) -> Title:
         """Update a title."""
+
         title = await self.repository.get_title(id=title_id)
 
         if not title:
@@ -131,3 +141,38 @@ class TitleService:
     async def remove_title_rating(self, user_id: int, title_id: int) -> None:
         """Remove a rating for a title."""
         await self.repository.delete_title_rating(user_id, title_id)
+
+    async def post_title_cover(self, title_id: int, file: UploadFile) -> str:
+        """Post a cover for a title."""
+
+        mime_type = file.content_type or self.MIME.from_buffer(await file.read(1024))
+
+        RegexValidator(
+            string=mime_type,
+            regex=r"^image/(jpeg|webp|jpg|png|gif)$",
+            exception=InvalidMimeTypeError(
+                expectedMimeType="jpeg, webp, jpg, png, gif",
+                mimeType=mime_type,
+            ),
+        )
+
+        await file.seek(0)
+
+        title = await self.repository.get_title(id=title_id)
+
+        if not title:
+            raise TitleNotFoundError
+
+        file_blob = f"covers/{title_id}"
+
+        async with self.aws_session.client("s3") as s3:  # type: ignore[no-untyped-call]
+            await s3.upload_fileobj(  # type: ignore[no-untyped-call]
+                file,
+                Settings.AWS_BUCKET_NAME,
+                file_blob,
+                ExtraArgs={"ContentType": mime_type},
+            )
+
+        await self.repository.update_title_cover(title, file_blob)
+
+        return f"s3://{file_blob}"

@@ -128,3 +128,7 @@ class TitleRepository(BaseRepository):
             TitleRatingTable.user_id == user_id,
         )
         await self._delete(smt)
+
+    async def update_title_cover(self, title: TitleTable, cover: str) -> TitleTable:
+        title.cover_image = cover
+        return await self._save(title)
