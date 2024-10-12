@@ -1,9 +1,10 @@
-from typing import Any, TypeVar
-
-from sqlalchemy import Delete, ScalarResult, Select
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from src.core.contexts.postgresql import PostgreSqlConnection
 from src.modules.base.table import BaseTable
+
+if TYPE_CHECKING:
+    from sqlalchemy import Delete, ScalarResult, Select
 
 _T = TypeVar("_T", bound=Any)
 _M = TypeVar("_M", bound=BaseTable)
@@ -12,7 +13,7 @@ _M = TypeVar("_M", bound=BaseTable)
 class BaseRepository:
     _session = PostgreSqlConnection.session_maker()
 
-    async def _execute_query(self, query: Select[tuple[_T]]) -> ScalarResult[_T]:
+    async def _execute_query(self, query: "Select[tuple[_T]]") -> "ScalarResult[_T]":
         """Helper method to execute a query and return the result."""
         async with self._session() as session:
             result = await session.execute(query)
@@ -26,7 +27,7 @@ class BaseRepository:
             await session.refresh(model)
         return model
 
-    async def _delete(self, statement: Delete) -> None:
+    async def _delete(self, statement: "Delete") -> None:
         """Deletes a record."""
         async with self._session() as session:
             await session.delete(statement)
