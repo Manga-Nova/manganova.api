@@ -9,7 +9,7 @@ class RegexValidator:
         *,
         string: str,
         regex: str,
-        exception: type[BadRequestError],
+        exception: type[BadRequestError] | BadRequestError,
     ) -> None:
         self._string = string
         self._pattern = re.compile(regex)
