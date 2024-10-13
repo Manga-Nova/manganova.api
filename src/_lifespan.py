@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from src.core.contexts.aws_s3 import AwsContext
 from src.core.contexts.postgresql import PostgreSqlConnection
 
 
@@ -11,6 +12,7 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     """Application lifespan events."""
     # Before startup
     await PostgreSqlConnection.create_all()
+    await AwsContext.create_bucket()
 
     yield
 
