@@ -7,6 +7,8 @@ from src.settings import Settings
 
 def create_app() -> FastAPI:
     """Create a FastAPI application."""
+    print("OLA" * 100)
+
     app = FastAPI(
         title=Settings.APP_NAME,
         version=Settings.APP_VERSION,
