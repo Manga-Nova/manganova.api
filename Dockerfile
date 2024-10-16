@@ -4,7 +4,7 @@ COPY . ./app
 WORKDIR /app
 
 RUN python -m pip install pdm
-RUN pdm install
+RUN pdm install --prod
 
 EXPOSE 8000
 
