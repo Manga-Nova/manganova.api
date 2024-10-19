@@ -17,7 +17,7 @@ class ApiError(Exception):
         self,
         message: str,
         status_code: int = 500,
-        **metadata: str | float | bool | dict[str, Any],
+        **metadata: str | float | bool | dict[str, Any] | list[Any],
     ) -> None:
         self.className = self.__class__.__name__
         self.message = message

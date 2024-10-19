@@ -11,7 +11,7 @@ class UnauthorizedError(ApiError):
     def __init__(
         self,
         message: str = "Unauthorized",
-        **metadata: str | float | dict[str, Any],
+        **metadata: str | float | dict[str, Any] | list[Any],
     ) -> None:
         super().__init__(message, status_code=status.HTTP_401_UNAUTHORIZED, **metadata)
 
@@ -22,7 +22,7 @@ class MissingTokenError(UnauthorizedError):
     def __init__(
         self,
         message: str = "Missing Token",
-        **metadata: str | float | dict[str, Any],
+        **metadata: str | float | dict[str, Any] | list[Any],
     ) -> None:
         super().__init__(message=message, **metadata)
 
@@ -33,7 +33,7 @@ class InvalidTokenError(UnauthorizedError):
     def __init__(
         self,
         message: str = "Invalid Token",
-        **metadata: str | float | dict[str, Any],
+        **metadata: str | float | dict[str, Any] | list[Any],
     ) -> None:
         super().__init__(message=message, **metadata)
 
@@ -44,6 +44,6 @@ class EmailOrPasswordError(UnauthorizedError):
     def __init__(
         self,
         message: str = "Email or password is incorrect",
-        **metadata: str | float | dict[str, Any],
+        **metadata: str | float | dict[str, Any] | list[Any],
     ) -> None:
         super().__init__(message=message, **metadata)

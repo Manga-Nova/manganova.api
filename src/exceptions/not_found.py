@@ -9,7 +9,7 @@ class NotFoundError(ApiError):
     def __init__(
         self,
         message: str = "Resource not found.",
-        **metadata: str | float | dict[str, Any],
+        **metadata: str | float | dict[str, Any] | list[Any],
     ) -> None:
         super().__init__(message, 404, **metadata)
 
@@ -20,7 +20,7 @@ class UserNotFoundError(NotFoundError):
     def __init__(
         self,
         message: str = "User not found.",
-        **metadata: str | float | dict[str, Any],
+        **metadata: str | float | dict[str, Any] | list[Any],
     ) -> None:
         super().__init__(message=message, **metadata)
 
@@ -31,7 +31,7 @@ class TitleNotFoundError(NotFoundError):
     def __init__(
         self,
         message: str = "Title not found.",
-        **metadata: str | float | dict[str, Any],
+        **metadata: str | float | dict[str, Any] | list[Any],
     ) -> None:
         super().__init__(message=message, **metadata)
 
@@ -42,7 +42,7 @@ class TagNotFoundError(NotFoundError):
     def __init__(
         self,
         message: str = "Tag not found.",
-        **metadata: str | float | dict[str, Any],
+        **metadata: str | float | dict[str, Any] | list[Any],
     ) -> None:
         super().__init__(message=message, **metadata)
 
@@ -53,6 +53,6 @@ class GroupNotFoundError(NotFoundError):
     def __init__(
         self,
         message: str = "Group not found.",
-        **metadata: str | float | dict[str, Any],
+        **metadata: str | float | dict[str, Any] | list[Any],
     ) -> None:
         super().__init__(message=message, **metadata)
