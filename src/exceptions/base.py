@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Any
 from fastapi.responses import JSONResponse
 
 from src._translator import Translator
+from src._types import LanguageEnum
 
 if TYPE_CHECKING:
     from fastapi import Request
@@ -28,9 +29,14 @@ class ApiError(Exception):
     @staticmethod
     async def handler(request: "Request", exc: "ApiError") -> JSONResponse:
         """Handle an API error."""
+
+        def _get_language() -> str:
+            lang = request.headers.get("Use-Language", None)
+            return lang if lang and lang in LanguageEnum else "en"
+
         exc.message = await ApiError._translator.translate(
             key=f"err-{exc.className}",
-            language=request.headers.get("Use-Language", "en"),
+            language=_get_language(),
             **exc.metadata,
         )
         return JSONResponse(
