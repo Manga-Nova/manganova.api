@@ -1,7 +1,8 @@
 from collections.abc import Sequence
 from datetime import datetime
+from typing import Annotated
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from src.modules.tag.dtos import Tag
 from src.modules.title.enums import TitleContentTypeEnum
@@ -24,8 +25,8 @@ class Title(BaseModel):
 class CreateTitle(BaseModel):
     """Create title model."""
 
-    name: str
-    description: str | None = None
+    name: Annotated[str, Field(max_length=500)]
+    description: Annotated[str | None, Field(max_length=2000)] = None
     release_date: datetime | None = None
     tags: Sequence[int]
     content_type: TitleContentTypeEnum
@@ -34,8 +35,8 @@ class CreateTitle(BaseModel):
 class UpdateTitle(BaseModel):
     """Update title model."""
 
-    name: str | None = None
-    description: str | None = None
+    name: Annotated[str | None, Field(max_length=200)] = None
+    description: Annotated[str | None, Field(max_length=2000)] = None
     release_date: datetime | None = None
     content_type: TitleContentTypeEnum | None = None
 

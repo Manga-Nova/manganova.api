@@ -71,9 +71,8 @@ class TitleRepository(BaseRepository):
         return await self._save(title)
 
     async def delete_title(self, title: TitleTable) -> None:
-        async with self._session() as session:
-            await session.delete(title)
-            await session.commit()
+        title.is_active = False
+        await self._save(title)
 
     async def add_tags(
         self,

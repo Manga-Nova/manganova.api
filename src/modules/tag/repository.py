@@ -42,7 +42,5 @@ class TagRepository(BaseRepository):
         return await self._save(tag)
 
     async def delete_tag(self, tag: "TagTable") -> None:
-        async with self._session() as session:
-            tag.is_active = False
-            session.add(tag)
-            await session.commit()
+        tag.is_active = False
+        await self._save(tag)

@@ -2,6 +2,7 @@ from collections.abc import Sequence
 from typing import Annotated
 
 from fastapi import Body, File, Path, Query, Request, UploadFile
+from fastapi.responses import StreamingResponse
 
 from src.core.router import ApiRouter
 from src.exceptions.conflict import TitleNameAlreadyExistsError
@@ -29,13 +30,22 @@ async def get_titles(params: Annotated[GetTitles, Query()]) -> Sequence[Title]:
     return await SERVICE.get_titles(params)
 
 
-@router.post(path="", response_model=Title, exceptions=[TitleNameAlreadyExistsError()])
+@router.post(
+    path="",
+    response_model=Title,
+    exceptions=[TitleNameAlreadyExistsError(titleName="Abc")],
+    requires_login=True,
+)
 async def create_title(create_title: Annotated[CreateTitle, Body()]) -> Title:
     """Create a title."""
     return await SERVICE.create_title(create_title)
 
 
-@router.get(path="/{title_id}", response_model=Title, exceptions=[TitleNotFoundError()])
+@router.get(
+    path="/{title_id}",
+    response_model=Title,
+    exceptions=[TitleNotFoundError(titleId=123)],
+)
 async def get_title(title_id: Annotated[int, Path()]) -> Title:
     """Get a title by ID."""
     return await SERVICE.get_title(title_id)
@@ -44,7 +54,11 @@ async def get_title(title_id: Annotated[int, Path()]) -> Title:
 @router.patch(
     path="/{title_id}",
     response_model=Title,
-    exceptions=[TitleNotFoundError(), TitleNameAlreadyExistsError()],
+    exceptions=[
+        TitleNotFoundError(titleId=123),
+        TitleNameAlreadyExistsError(titleName="Abc"),
+    ],
+    requires_login=True,
 )
 async def update_title(
     title_id: Annotated[int, Path()],
@@ -54,7 +68,12 @@ async def update_title(
     return await SERVICE.update_title(title_id, title)
 
 
-@router.delete(path="/{title_id}")
+@router.delete(
+    path="/{title_id}",
+    requires_login=True,
+    status_code=204,
+    exceptions=[TitleNotFoundError(titleId=123)],
+)
 async def delete_title(title_id: Annotated[int, Path()]) -> None:
     """Delete a title."""
     await SERVICE.delete_title(title_id)
@@ -63,7 +82,8 @@ async def delete_title(title_id: Annotated[int, Path()]) -> None:
 @router.patch(
     path="/{title_id}/tags",
     response_model=Title,
-    exceptions=[TitleNotFoundError(), TagNotFoundError()],
+    exceptions=[TitleNotFoundError(titleId=123), TagNotFoundError(tagId=123)],
+    requires_login=True,
 )
 async def add_title_tags(
     title_id: Annotated[int, Path()],
@@ -76,7 +96,8 @@ async def add_title_tags(
 @router.delete(
     path="/{title_id}/tags",
     response_model=Title,
-    exceptions=[TitleNotFoundError(), TagNotFoundError()],
+    exceptions=[TitleNotFoundError(titleId=123), TagNotFoundError(tagId=123)],
+    requires_login=True,
 )
 async def remove_title_tags(
     title_id: Annotated[int, Path()],
@@ -94,7 +115,11 @@ async def get_title_rating(
     return await SERVICE.get_title_rating(title_id)
 
 
-@router.post(path="/{title_id}/rating", response_model=CreateRating)
+@router.post(
+    path="/{title_id}/rating",
+    response_model=CreateRating,
+    requires_login=True,
+)
 async def create_title_rating(
     request: Request,
     title_id: Annotated[int, Path()],
@@ -104,7 +129,11 @@ async def create_title_rating(
     return await SERVICE.post_title_rating(request.state.user.id, title_id, params)
 
 
-@router.delete(path="/{title_id}/rating", status_code=204)
+@router.delete(
+    path="/{title_id}/rating",
+    status_code=204,
+    requires_login=True,
+)
 async def delete_title_rating(
     request: Request,
     title_id: Annotated[int, Path()],
@@ -113,7 +142,11 @@ async def delete_title_rating(
     await SERVICE.remove_title_rating(request.state.user.id, title_id)
 
 
-@router.post(path="/{title_id}/cover")
+@router.post(
+    path="/{title_id}/cover",
+    requires_login=True,
+    response_class=StreamingResponse,
+)
 async def upload_title_cover(
     title_id: Annotated[int, Path()],
     file: Annotated[UploadFile, File()],
