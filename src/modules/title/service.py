@@ -42,7 +42,7 @@ class TitleService:
         title = await self.repository.get_title(id=title_id)
 
         if not title:
-            raise TitleNotFoundError
+            raise TitleNotFoundError(titleId=title_id)
 
         return Title(**title.model_dump())
 
@@ -54,7 +54,7 @@ class TitleService:
     async def create_title(self, create_title: CreateTitle) -> Title:
         """Create a title."""
         if await self.repository.get_title_by_name(create_title.name):
-            raise TitleNameAlreadyExistsError
+            raise TitleNameAlreadyExistsError(titleName=create_title.name)
 
         tags = await self.tag_repository.get_tags_by_ids(create_title.tags)
 
@@ -70,12 +70,12 @@ class TitleService:
         title = await self.repository.get_title(id=title_id)
 
         if not title:
-            raise TitleNotFoundError
+            raise TitleNotFoundError(titleId=title_id)
 
         if update_title.name and await self.repository.get_title_by_name(
             update_title.name,
         ):
-            raise TitleNameAlreadyExistsError
+            raise TitleNameAlreadyExistsError(titleName=title.name)
 
         title = await self.repository.update_title(title, update_title)
         return Title(**title.model_dump())
@@ -85,7 +85,7 @@ class TitleService:
         title = await self.repository.get_title(id=title_id)
 
         if not title:
-            raise TitleNotFoundError
+            raise TitleNotFoundError(titleId=title_id)
 
         await self.repository.delete_title(title)
 
@@ -94,7 +94,7 @@ class TitleService:
         title_ = await self.repository.get_title(id=title_id)
 
         if not title_:
-            raise TitleNotFoundError
+            raise TitleNotFoundError(titleId=title_id)
 
         tags = await self.tag_repository.get_tags_by_ids(params.tags)
 
@@ -109,7 +109,7 @@ class TitleService:
         title_ = await self.repository.get_title(id=title_id)
 
         if not title_:
-            raise TitleNotFoundError
+            raise TitleNotFoundError(titleId=title_id)
 
         tags = await self.tag_repository.get_tags_by_ids(params.tags)
 
@@ -161,7 +161,7 @@ class TitleService:
         title = await self.repository.get_title(id=title_id)
 
         if not title:
-            raise TitleNotFoundError
+            raise TitleNotFoundError(titleId=title_id)
 
         file_blob = f"covers/{title_id}"
 

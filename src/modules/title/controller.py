@@ -33,7 +33,7 @@ async def get_titles(params: Annotated[GetTitles, Query()]) -> Sequence[Title]:
 @router.post(
     path="",
     response_model=Title,
-    exceptions=[TitleNameAlreadyExistsError()],
+    exceptions=[TitleNameAlreadyExistsError(titleName="Abc")],
     requires_login=True,
 )
 async def create_title(create_title: Annotated[CreateTitle, Body()]) -> Title:
@@ -41,7 +41,11 @@ async def create_title(create_title: Annotated[CreateTitle, Body()]) -> Title:
     return await SERVICE.create_title(create_title)
 
 
-@router.get(path="/{title_id}", response_model=Title, exceptions=[TitleNotFoundError()])
+@router.get(
+    path="/{title_id}",
+    response_model=Title,
+    exceptions=[TitleNotFoundError(titleId=123)],
+)
 async def get_title(title_id: Annotated[int, Path()]) -> Title:
     """Get a title by ID."""
     return await SERVICE.get_title(title_id)
@@ -50,7 +54,10 @@ async def get_title(title_id: Annotated[int, Path()]) -> Title:
 @router.patch(
     path="/{title_id}",
     response_model=Title,
-    exceptions=[TitleNotFoundError(), TitleNameAlreadyExistsError()],
+    exceptions=[
+        TitleNotFoundError(titleId=123),
+        TitleNameAlreadyExistsError(titleName="Abc"),
+    ],
     requires_login=True,
 )
 async def update_title(
@@ -64,6 +71,8 @@ async def update_title(
 @router.delete(
     path="/{title_id}",
     requires_login=True,
+    status_code=204,
+    exceptions=[TitleNotFoundError(titleId=123)],
 )
 async def delete_title(title_id: Annotated[int, Path()]) -> None:
     """Delete a title."""
@@ -73,7 +82,7 @@ async def delete_title(title_id: Annotated[int, Path()]) -> None:
 @router.patch(
     path="/{title_id}/tags",
     response_model=Title,
-    exceptions=[TitleNotFoundError(), TagNotFoundError()],
+    exceptions=[TitleNotFoundError(titleId=123), TagNotFoundError(tagId=123)],
     requires_login=True,
 )
 async def add_title_tags(
@@ -87,7 +96,7 @@ async def add_title_tags(
 @router.delete(
     path="/{title_id}/tags",
     response_model=Title,
-    exceptions=[TitleNotFoundError(), TagNotFoundError()],
+    exceptions=[TitleNotFoundError(titleId=123), TagNotFoundError(tagId=123)],
     requires_login=True,
 )
 async def remove_title_tags(
