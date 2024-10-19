@@ -26,13 +26,18 @@ async def get_tag(tag_id: Annotated[int, Path()]) -> Tag:
     return await SERVICE.get_tag(tag_id)
 
 
-@router.post("", response_model=Tag)
+@router.post("", response_model=Tag, requires_login=True)
 async def create_tag(tag: Annotated[CreateTag, Body()]) -> Tag:
     """Create a tag."""
     return await SERVICE.create_tag(tag)
 
 
-@router.patch("/{tag_id}", response_model=Tag, exceptions=[TagNotFoundError()])
+@router.patch(
+    "/{tag_id}",
+    response_model=Tag,
+    exceptions=[TagNotFoundError()],
+    requires_login=True,
+)
 async def update_tag(
     tag_id: Annotated[int, Path()],
     tag: Annotated[UpdateTag, Body()],
@@ -41,7 +46,12 @@ async def update_tag(
     return await SERVICE.update_tag(tag_id, tag)
 
 
-@router.delete("/{tag_id}", exceptions=[TagNotFoundError()], status_code=204)
+@router.delete(
+    "/{tag_id}",
+    exceptions=[TagNotFoundError()],
+    status_code=204,
+    requires_login=True,
+)
 async def delete_tag(tag_id: Annotated[int, Path()]) -> None:
     """Delete a tag."""
     await SERVICE.delete_tag(tag_id)

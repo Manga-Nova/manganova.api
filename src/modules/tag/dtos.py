@@ -1,6 +1,7 @@
 from datetime import datetime
+from typing import Annotated
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from src.modules.tag.enums import TagGroupEnum
 
@@ -15,12 +16,12 @@ class Tag(BaseModel):
 
 
 class CreateTag(BaseModel):
-    name: str
+    name: Annotated[str, Field(max_length=100)]
     group: TagGroupEnum
 
 
 class UpdateTag(BaseModel):
-    name: str | None = None
+    name: Annotated[str | None, Field(max_length=100)] = None
 
 
 class GetTags(BaseModel):
