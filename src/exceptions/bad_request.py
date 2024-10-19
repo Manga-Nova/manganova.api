@@ -64,3 +64,12 @@ class InvalidMimeTypeError(BadRequestError):
         **metadata: str | float | dict[str, Any],
     ) -> None:
         super().__init__(message=message, **metadata)
+
+
+class InvalidLanguageError(BadRequestError):
+    def __init__(
+        self,
+        message: str = "Invalid language",
+        **metadata: str | float | dict[str, Any],
+    ) -> None:
+        super().__init__(message=message, **metadata)
