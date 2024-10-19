@@ -38,6 +38,7 @@ class TitleTable(BaseTable):
     )
     content_type: Mapped[TitleContentTypeEnum] = mapped_column(__type_pos=String(100))
     cover_image: Mapped[str | None] = mapped_column(default=None, nullable=True)
+    is_active: Mapped[bool] = mapped_column(default=True)
 
     tags: Mapped[list["TagTable"]] = relationship(
         "TagTable",
