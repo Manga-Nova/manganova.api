@@ -11,6 +11,7 @@ from src.exceptions.bad_request import (
     PasswordsDoNotMatchError,
 )
 from src.exceptions.conflict import PasswordAlreadyUsedError, UsernameAlreadyExistsError
+from src.exceptions.not_found import UserNotFoundError
 from src.exceptions.unauthorized import EmailOrPasswordError
 from src.modules.auth.dtos import (
     ChangePasswordParams,
@@ -62,9 +63,10 @@ async def register(params: Annotated[RegisterParams, Body()]) -> LoginResponse:
     status_code=status.HTTP_200_OK,
     response_model=ChangePasswordResponse,
     exceptions=[
+        UserNotFoundError(),
         PasswordAlreadyUsedError(),
         PasswordsDoNotMatchError(),
-        EmailOrPasswordError(),
+        InvalidPasswordError(),
     ],
 )
 async def change_password(

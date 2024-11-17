@@ -8,6 +8,7 @@ from src.exceptions.bad_request import (
     PasswordsDoNotMatchError,
 )
 from src.exceptions.conflict import PasswordAlreadyUsedError, UsernameAlreadyExistsError
+from src.exceptions.not_found import UserNotFoundError
 from src.exceptions.unauthorized import EmailOrPasswordError
 from src.modules.auth.dtos import (
     ChangePasswordParams,
@@ -97,7 +98,7 @@ class AuthService:
         """Change the password of the current user."""
         user = await self.repository.get_user(id=user_id)
         if not user:
-            raise EmailOrPasswordError
+            raise UserNotFoundError
 
         if self.crypt_helper.check_password(params.new_password, user.password):
             raise PasswordsDoNotMatchError
