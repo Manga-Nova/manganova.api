@@ -18,6 +18,13 @@
       ],
       "envFile": "${workspaceFolder}/.env",
       "jinja": true
+    },
+    {
+      "name": "Python: Pytest",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "jinja": true
     }
   ]
 }
