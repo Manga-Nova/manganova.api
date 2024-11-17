@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 class TestAuthRegisterSuite:
     _PATH = "/auth/register"
 
-    @pytest.fixture(autouse=False)
+    @pytest.fixture
     def fixture_user(self, client: "TestClient") -> None:
         client.post(
             url=self._PATH,
