@@ -4,3 +4,7 @@
 :license: MIT, see LICENSE for more details.
 
 """
+
+from src._version import get_version as _get_version
+
+__version__ = _get_version()

@@ -2,7 +2,7 @@ from typing import Literal
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from src._version import get_version
+from src._version import get_version as _get_version
 
 
 class _Settings(BaseSettings):
@@ -11,7 +11,7 @@ class _Settings(BaseSettings):
     ENV: Literal["prod", "dev", "test"] = "dev"
 
     APP_NAME: str = "Manga Nova API"
-    APP_VERSION: str = get_version()
+    APP_VERSION: str = _get_version()
 
     DB_URL: str
 
