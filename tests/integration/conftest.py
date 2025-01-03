@@ -1,10 +1,11 @@
 from collections.abc import Generator
-from datetime import datetime
 from os import environ
-from typing import Any, TypedDict
+from typing import Any
 
 import pytest
 from fastapi.testclient import TestClient
+
+from tests.integration.models import AuthResponse
 
 environ["ENV"] = "test"
 environ["DB_URL"] = "sqlite+aiosqlite:///test.db"
@@ -18,20 +19,8 @@ def client() -> Generator[TestClient, Any, None]:
         yield client
 
 
-class _TestUser(TypedDict):
-    id: int
-    created_at: datetime
-    username: str
-    email: str
-
-
-class _TestUserResponse(TypedDict):
-    access_token: str
-    user: _TestUser
-
-
 @pytest.fixture(autouse=True)
-def test_user(client: "TestClient") -> _TestUserResponse:
+def test_user(client: "TestClient") -> AuthResponse:
     response = client.post(
         "/auth/register",
         json={
@@ -40,7 +29,7 @@ def test_user(client: "TestClient") -> _TestUserResponse:
             "email": "testClient@gmail.com",
         },
     )
-    return _TestUserResponse(**response.json())
+    return AuthResponse(**response.json())
 
 
 @pytest.fixture(autouse=True)
