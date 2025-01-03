@@ -5,6 +5,7 @@ err-InvalidUsernameError = Nome de usuário inválido
 err-PasswordsDoNotMatchError = As senhas não coincidem
 err-MissingParamsError = Parâmetros ausentes
 err-InvalidMimeTypeError = Tipo MIME inválido
+err-PasswordEqualsToCurrentError = A senha é igual à atual
 
 err-ConflictError = Conflito
 err-UsernameAlreadyExistsError = Nome de usuário já existe

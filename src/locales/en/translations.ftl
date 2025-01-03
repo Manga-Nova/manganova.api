@@ -5,6 +5,7 @@ err-InvalidUsernameError =  Invalid username
 err-PasswordsDoNotMatchError = Passwords does not match
 err-MissingParamsError = Missing parameters
 err-InvalidMimeTypeError = Invalid mime type
+err-PasswordEqualsToCurrentError = Password equals to current
 
 err-ConflictError = Conflict
 err-UsernameAlreadyExistsError = Username already exists
