@@ -29,8 +29,8 @@ class LoginResponse(BaseModel):
 class ChangePasswordParams(BaseModel):
     """Change password parameters."""
 
+    password: str
     old_password: str
-    new_password: str
 
 
 class ChangePasswordResponse(BaseModel):

@@ -5,6 +5,7 @@ from src.exceptions.bad_request import (
     InvalidEmailError,
     InvalidPasswordError,
     InvalidUsernameError,
+    PasswordEqualsToCurrentError,
     PasswordsDoNotMatchError,
 )
 from src.exceptions.conflict import PasswordAlreadyUsedError, UsernameAlreadyExistsError
@@ -100,22 +101,23 @@ class AuthService:
         if not user:
             raise UserNotFoundError
 
-        if self.crypt_helper.check_password(params.new_password, user.password):
+        if self.crypt_helper.check_password(params.password, user.password):
+            raise PasswordEqualsToCurrentError
+
+        if not self.crypt_helper.check_password(params.old_password, user.password):
             raise PasswordsDoNotMatchError
 
-        old_hashes = await self.repository.get_old_passwords(user_id=user.id)
-
-        for old_hash in old_hashes:
-            if self.crypt_helper.check_password(params.new_password, old_hash.password):
+        for old_hash in await self.repository.get_old_passwords(user_id=user.id):
+            if self.crypt_helper.check_password(params.password, old_hash.password):
                 raise PasswordAlreadyUsedError
 
         RegexValidator(
-            string=params.new_password,
+            string=params.password,
             regex=Settings.PASSWORD_REGEX,
             exception=InvalidPasswordError,
         )
 
-        new_password = self.crypt_helper.hash_password(params.new_password)
+        new_password = self.crypt_helper.hash_password(params.password)
 
         user = await self.repository.update_user_password(user, new_password)
         return User(**user.__dict__)

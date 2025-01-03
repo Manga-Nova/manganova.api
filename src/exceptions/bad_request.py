@@ -48,6 +48,15 @@ class PasswordsDoNotMatchError(BadRequestError):
         super().__init__(message=message, **metadata)
 
 
+class PasswordEqualsToCurrentError(BadRequestError):
+    def __init__(
+        self,
+        message: str = "Password is equal to the current password",
+        **metadata: str | float | dict[str, Any] | list[Any],
+    ) -> None:
+        super().__init__(message=message, **metadata)
+
+
 class MissingParamsError(BadRequestError):
     def __init__(
         self,
