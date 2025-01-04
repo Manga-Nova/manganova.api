@@ -44,10 +44,10 @@ class Translator:
         *,
         key: str,
         language: LanguageEnum | str,
-        **kwargs: Any,  # noqa: ANN401
+        **kwargs: str | float | bool | dict[str, Any] | list[Any],
     ) -> str:
         """
         Translate a key to a given language.
         """
         l10n = self._get_locale(language)
-        return l10n.format_value(key, **kwargs)
+        return l10n.format_value(key, kwargs)
