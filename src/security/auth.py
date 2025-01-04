@@ -33,7 +33,7 @@ class AuthSecurity(APIKeyHeader):
     def _get_token(self, request: Request) -> str:
         """Get token from request."""
         if token := request.headers.get(self.model.name):
-            return token
+            return token.removeprefix("Bearer ")
         raise MissingTokenError
 
     async def _validate(self, request: Request) -> Literal[True]:
